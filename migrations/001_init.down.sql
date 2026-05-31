@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS production_entries;
+DROP TABLE IF EXISTS payments;
+DROP TABLE IF EXISTS raw_materials;
+DROP TABLE IF EXISTS spare_parts;
+DROP TABLE IF EXISTS stock_items;
+DROP TABLE IF EXISTS workers;
+DROP TABLE IF EXISTS machines;
+DROP TABLE IF EXISTS subscriptions;
+DROP TABLE IF EXISTS organizations;
