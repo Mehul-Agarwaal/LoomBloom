@@ -20,6 +20,15 @@ func (api API) Routes() http.Handler {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /", api.dashboard)
+	mux.HandleFunc("GET /machines", api.machinesPage)
+	mux.HandleFunc("POST /machines", api.machinesPage)
+	mux.HandleFunc("GET /workers", api.workersPage)
+	mux.HandleFunc("POST /workers", api.workersPage)
+	mux.HandleFunc("GET /stock", api.stockPage)
+	mux.HandleFunc("POST /stock", api.stockPage)
+	mux.HandleFunc("GET /production", api.productionPage)
+	mux.HandleFunc("POST /production", api.productionPage)
+
 	mux.HandleFunc("GET /healthz", api.health)
 	mux.HandleFunc("GET /readyz", api.ready)
 	mux.HandleFunc("GET /api/v1/modules", api.modules)
