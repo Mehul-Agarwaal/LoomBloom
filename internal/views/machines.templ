@@ -1,0 +1,90 @@
+package views
+
+import (
+	"fmt"
+	"loombloom/internal/store"
+)
+
+templ MachinesPage(org store.Organization, machines []store.Machine, errStr string) {
+	@PageLayout("Machines", org, "machines") {
+		<div class="page-header">
+			<div class="page-title">
+				<h2>Machines ({ org.Name })</h2>
+				<p>Manage loom machines, their specifications, and operation status.</p>
+			</div>
+		</div>
+
+		if errStr != "" {
+			<div class="alert alert-danger">
+				<strong>Error:</strong> { errStr }
+			</div>
+		}
+
+		<div class="two-col">
+			<div class="section">
+				<header>
+					<h3>Registered Looms</h3>
+					<span class="subtle">{ fmt.Sprintf("%d total", len(machines)) }</span>
+				</header>
+				if len(machines) == 0 {
+					<p class="empty">No machines registered. Use the panel on the right to add one.</p>
+				} else {
+					<table>
+						<thead>
+							<tr>
+								<th>Machine Number</th>
+								<th>Size</th>
+								<th>Type</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							for _, m := range machines {
+								<tr>
+									<td style="font-weight: 600;">{ m.MachineNumber }</td>
+									<td>{ m.Size }</td>
+									<td>{ m.Type }</td>
+									<td>
+										if m.Status == "maintenance" {
+											<span class="status warn">{ m.Status }</span>
+										} else {
+											<span class="status">{ m.Status }</span>
+										}
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				}
+			</div>
+
+			<div>
+				<div class="form-card">
+					<h3>Add New Loom</h3>
+					<form action="/machines" method="POST">
+						<div class="form-group">
+							<label for="machine_number">Machine Number *</label>
+							<input type="text" id="machine_number" name="machine_number" class="form-control" placeholder="e.g. Loom-004" required />
+						</div>
+						<div class="form-group">
+							<label for="size">Size</label>
+							<input type="text" id="size" name="size" class="form-control" placeholder="e.g. 56 inch" />
+						</div>
+						<div class="form-group">
+							<label for="type">Type</label>
+							<input type="text" id="type" name="type" class="form-control" placeholder="e.g. auto, power, manual" />
+						</div>
+						<div class="form-group">
+							<label for="status">Status</label>
+							<select id="status" name="status" class="form-control">
+								<option value="active" selected>Active</option>
+								<option value="maintenance">Maintenance</option>
+							</select>
+						</div>
+						<button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">Register Machine</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	}
+}

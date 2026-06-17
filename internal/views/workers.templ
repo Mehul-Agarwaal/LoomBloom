@@ -1,0 +1,95 @@
+package views
+
+import (
+	"fmt"
+	"loombloom/internal/store"
+)
+
+templ WorkersPage(org store.Organization, workers []store.Worker, errStr string) {
+	@PageLayout("Workers", org, "workers") {
+		<div class="page-header">
+			<div class="page-title">
+				<h2>Workers ({ org.Name })</h2>
+				<p>Manage weaver records, shifts, and productivity targets.</p>
+			</div>
+		</div>
+
+		if errStr != "" {
+			<div class="alert alert-danger">
+				<strong>Error:</strong> { errStr }
+			</div>
+		}
+
+		<div class="two-col">
+			<div class="section">
+				<header>
+					<h3>Active Weaver Staff</h3>
+					<span class="subtle">{ fmt.Sprintf("%d workers", len(workers)) }</span>
+				</header>
+				if len(workers) == 0 {
+					<p class="empty">No workers registered yet. Use the form on the right to register weavers.</p>
+				} else {
+					<table>
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Phone</th>
+								<th>Avg Production</th>
+								<th>Closes / Shift</th>
+								<th>Shifts</th>
+							</tr>
+						</thead>
+						<tbody>
+							for _, w := range workers {
+								<tr>
+									<td style="font-weight: 600;">{ w.Name }</td>
+									<td>
+										if w.Phone != "" {
+											{ w.Phone }
+										} else {
+											<span class="subtle">-</span>
+										}
+									</td>
+									<td>{ fmt.Sprintf("%.2f m", w.AverageProduction) }</td>
+									<td>{ fmt.Sprint(w.ClosePerShift) }</td>
+									<td>{ fmt.Sprint(w.NumberOfShifts) }</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				}
+			</div>
+
+			<div>
+				<div class="form-card">
+					<h3>Register New Worker</h3>
+					<form action="/workers" method="POST">
+						<div class="form-group">
+							<label for="name">Full Name *</label>
+							<input type="text" id="name" name="name" class="form-control" placeholder="e.g. Ramesh Patel" required />
+						</div>
+						<div class="form-group">
+							<label for="phone">Phone Number</label>
+							<input type="text" id="phone" name="phone" class="form-control" placeholder="e.g. 9876543210" />
+						</div>
+						<div class="form-group">
+							<label for="average_production">Avg Production (meters)</label>
+							<input type="number" step="0.01" id="average_production" name="average_production" class="form-control" placeholder="e.g. 180.00" value="0.00" />
+						</div>
+						<div class="form-row">
+							<div class="form-group">
+								<label for="close_per_shift">Closes / Shift</label>
+								<input type="number" id="close_per_shift" name="close_per_shift" class="form-control" placeholder="e.g. 3" value="0" />
+							</div>
+							<div class="form-group">
+								<label for="number_of_shifts">Shifts</label>
+								<input type="number" id="number_of_shifts" name="number_of_shifts" class="form-control" placeholder="e.g. 2" value="1" />
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">Register Worker</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	}
+}

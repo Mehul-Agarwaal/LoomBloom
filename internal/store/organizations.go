@@ -65,3 +65,22 @@ func (s Store) OrganizationExists(ctx context.Context, id string) (bool, error) 
 	}
 	return false, err
 }
+
+func (s Store) GetFirstOrganization(ctx context.Context) (Organization, error) {
+	const query = `
+		SELECT id, name, owner_name, phone, subscription_plan, created_at
+		FROM organizations
+		ORDER BY created_at ASC
+		LIMIT 1`
+	var org Organization
+	err := s.db.QueryRowContext(ctx, query).Scan(
+		&org.ID,
+		&org.Name,
+		&org.OwnerName,
+		&org.Phone,
+		&org.SubscriptionPlan,
+		&org.CreatedAt,
+	)
+	return org, err
+}
+
