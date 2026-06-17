@@ -18,24 +18,24 @@ templ DashboardPage(data store.Dashboard) {
 					<h2 style="font-size: clamp(28px, 4vw, 48px); line-height: 1.02; max-width: 780px; letter-spacing: 0;">{ data.Organization.Name }</h2>
 					<p style="margin-top: 12px; max-width: 720px; color: var(--muted); line-height: 1.6;">Track machines, workers, inventory, production, and payments from one practical workspace built for daily loom business management.</p>
 				</div>
-				<aside class="side-panel" style="padding: 18px; display: grid; align-content: space-between; gap: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px;">
+				<aside class="side-panel" style="padding: 18px; display: grid; align-content: space-between; gap: 18px;">
 					<div>
 						<p class="subtle">Owner</p>
-						<strong style="display: block; font-size: 30px;">{ data.Organization.OwnerName }</strong>
+						<strong style="display: block; font-size: 30px; font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--neon-purple);">{ data.Organization.OwnerName }</strong>
 					</div>
 					<div>
 						<p class="subtle">Phone</p>
-						<strong style="display: block; font-size: 30px;">{ data.Organization.Phone }</strong>
+						<strong style="display: block; font-size: 30px; font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--neon-blue);">{ data.Organization.Phone }</strong>
 					</div>
 				</aside>
 			</section>
 			<section class="grid">
 				<div class="metric"><span>Machines</span><strong>{ fmt.Sprint(data.MachineCount) }</strong><em>registered looms</em></div>
-				<div class="metric"><span>Workers</span><strong>{ fmt.Sprint(data.WorkerCount) }</strong><em>active staff records</em></div>
+				<div class="metric"><span>Workers</span><strong>{ fmt.Sprint(data.WorkerCount) }</strong><em>active weaver records</em></div>
 				<div class="metric"><span>Today Production</span><strong>{ fmt.Sprintf("%.2f m", data.TodayProduction) }</strong><em>current day output</em></div>
-				<div class="metric"><span>Stock Quantity</span><strong>{ fmt.Sprintf("%.2f", data.StockQuantity) }</strong><em>finished and stored stock</em></div>
+				<div class="metric"><span>Stock Quantity</span><strong>{ fmt.Sprintf("%.2f", data.StockQuantity) }</strong><em>finished stock stored</em></div>
 				<div class="metric"><span>Raw Materials</span><strong>{ fmt.Sprint(data.RawMaterialCount) }</strong><em>material categories</em></div>
-				<div class="metric"><span>Spare Parts</span><strong>{ fmt.Sprint(data.SparePartCount) }</strong><em>maintenance inventory</em></div>
+				<div class="metric"><span>Spare Parts</span><strong>{ fmt.Sprint(data.SparePartCount) }</strong><em>maintenance items</em></div>
 				<div class="metric"><span>Payments</span><strong>{ fmt.Sprintf("Rs %.2f", data.PaymentTotal) }</strong><em>recorded amount</em></div>
 				<div class="metric"><span>Subscription</span><strong>{ data.Organization.SubscriptionPlan }</strong><em>current account plan</em></div>
 			</section>
@@ -44,31 +44,52 @@ templ DashboardPage(data store.Dashboard) {
 				.grid {
 					display: grid;
 					grid-template-columns: repeat(4, minmax(0, 1fr));
-					gap: 14px;
-					margin-bottom: 22px;
-					margin-top: 22px;
+					gap: 16px;
+					margin-bottom: 24px;
+					margin-top: 24px;
 				}
 				.hero {
 					display: grid;
 					grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.8fr);
-					gap: 22px;
+					gap: 24px;
 					align-items: stretch;
-					margin-bottom: 22px;
+					margin-bottom: 24px;
 				}
 				.metric {
-					min-height: 118px;
-					padding: 16px;
+					min-height: 120px;
+					padding: 20px;
 					border: 1px solid var(--line);
-					border-radius: 8px;
+					border-radius: 12px;
 					background: var(--panel);
+					backdrop-filter: blur(16px);
+					box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+					transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 				}
-				.metric span { color: var(--muted); font-size: 13px; }
-				.metric strong { display: block; margin-top: 12px; font-size: 28px; line-height: 1.1; }
-				.metric em { display: block; margin-top: 8px; color: var(--accent); font-size: 12px; font-style: normal; }
+				.metric:hover {
+					border-color: rgba(0, 229, 255, 0.25);
+					box-shadow: 0 8px 32px 0 rgba(0, 229, 255, 0.05), 0 0 15px rgba(192, 132, 252, 0.05);
+					transform: translateY(-2px);
+				}
+				.metric span { color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+				.metric strong { font-family: 'Outfit', sans-serif; display: block; margin-top: 10px; font-size: 28px; line-height: 1.1; font-weight: 700; color: var(--ink); }
+				.metric em { display: block; margin-top: 8px; color: var(--neon-blue); font-size: 12px; font-style: normal; font-weight: 500; }
+				.side-panel {
+					background: var(--panel);
+					border: 1px solid var(--line);
+					border-radius: 12px;
+					backdrop-filter: blur(16px);
+					box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+					transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+				}
+				.side-panel:hover {
+					border-color: rgba(192, 132, 252, 0.25);
+					box-shadow: 0 8px 32px 0 rgba(192, 132, 252, 0.05), 0 0 15px rgba(0, 229, 255, 0.05);
+					transform: translateY(-2px);
+				}
 				.columns {
 					display: grid;
 					grid-template-columns: repeat(2, minmax(0, 1fr));
-					gap: 18px;
+					gap: 24px;
 				}
 				@media (max-width: 920px) {
 					.hero, .columns { grid-template-columns: 1fr; }
