@@ -1,0 +1,761 @@
+package views
+
+import (
+	"loombloom/internal/store"
+)
+
+templ SetupPage(errStr string) {
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>Setup Your Enterprise - LoomBloom</title>
+			<style>
+				@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+				:root {
+					color-scheme: dark;
+					--ink: #f8fafc;
+					--muted: #94a3b8;
+					--line: rgba(99, 102, 241, 0.12);
+					--paper: #05070f;
+					--panel: rgba(13, 17, 35, 0.65);
+					--accent: #00e5ff;
+					--accent-2: #c084fc;
+					--neon-blue: #00e5ff;
+					--neon-purple: #c084fc;
+					--deep-purple: #7c3aed;
+					--danger: #ff1744;
+				}
+				* { box-sizing: border-box; }
+				body {
+					margin: 0;
+					font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+					color: var(--ink);
+					background: radial-gradient(circle at 50% 0%, #150d30 0%, #05070f 75%);
+					background-attachment: fixed;
+					min-height: 100vh;
+					display: grid;
+					place-items: center;
+					padding: 24px;
+				}
+				.container {
+					width: 100%;
+					max-width: 480px;
+					background: var(--panel);
+					border: 1px solid var(--line);
+					border-radius: 16px;
+					padding: 36px;
+					backdrop-filter: blur(16px);
+					box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 229, 255, 0.05);
+				}
+				.brand {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 12px;
+					margin-bottom: 32px;
+				}
+				.mark {
+					display: grid;
+					place-items: center;
+					width: 44px;
+					height: 44px;
+					border-radius: 12px;
+					background: linear-gradient(135deg, var(--neon-blue), var(--deep-purple));
+					color: #05070f;
+					font-weight: 800;
+					font-size: 18px;
+					box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+					font-family: 'Outfit', sans-serif;
+				}
+				.brand h1 {
+					font-family: 'Outfit', sans-serif;
+					font-size: 24px;
+					font-weight: 700;
+					margin: 0;
+					letter-spacing: -0.5px;
+				}
+				.header-text {
+					text-align: center;
+					margin-bottom: 28px;
+				}
+				.header-text h2 {
+					font-family: 'Outfit', sans-serif;
+					font-size: 20px;
+					font-weight: 600;
+					margin: 0 0 8px 0;
+					color: var(--neon-purple);
+				}
+				.header-text p {
+					font-size: 14px;
+					color: var(--muted);
+					margin: 0;
+				}
+				.form-group {
+					margin-bottom: 20px;
+				}
+				.form-group label {
+					display: block;
+					font-size: 13px;
+					font-weight: 600;
+					margin-bottom: 6px;
+					color: var(--muted);
+				}
+				.form-control {
+					width: 100%;
+					height: 42px;
+					padding: 10px 14px;
+					border: 1px solid rgba(255, 255, 255, 0.08);
+					border-radius: 8px;
+					background: rgba(5, 7, 15, 0.7);
+					color: var(--ink);
+					font-family: inherit;
+					font-size: 14px;
+					transition: all 0.2s ease;
+				}
+				.form-control:focus {
+					outline: none;
+					border-color: var(--neon-blue);
+					box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+					background: rgba(5, 7, 15, 0.9);
+				}
+				.btn {
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					width: 100%;
+					height: 44px;
+					border-radius: 8px;
+					font-size: 15px;
+					font-weight: 600;
+					border: 1px solid transparent;
+					cursor: pointer;
+					transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+					font-family: inherit;
+					margin-top: 10px;
+					background: linear-gradient(135deg, var(--neon-blue), var(--deep-purple));
+					color: #05070f;
+					box-shadow: 0 4px 15px rgba(0, 229, 255, 0.2);
+				}
+				.btn:hover {
+					transform: translateY(-1px);
+					box-shadow: 0 6px 20px rgba(0, 229, 255, 0.35), 0 0 10px rgba(192, 132, 252, 0.25);
+				}
+				.alert {
+					padding: 12px 16px;
+					border-radius: 8px;
+					margin-bottom: 20px;
+					font-size: 14px;
+					background: rgba(255, 23, 68, 0.12);
+					border: 1px solid rgba(255, 23, 68, 0.2);
+					color: var(--danger);
+				}
+			</style>
+		</head>
+		<body>
+			<div class="container">
+				<div class="brand">
+					<div class="mark">LB</div>
+					<h1>LoomBloom</h1>
+				</div>
+				<div class="header-text">
+					<h2>Enterprise Setup</h2>
+					<p>Register your enterprise details to begin</p>
+				</div>
+				
+				if errStr != "" {
+					<div class="alert">{ errStr }</div>
+				}
+
+				<form method="POST" action="/setup">
+					<div class="form-group">
+						<label for="name">Enterprise Name</label>
+						<input type="text" id="name" name="name" class="form-control" placeholder="e.g. Acme Textiles" required/>
+					</div>
+					<div class="form-group">
+						<label for="gst_number">GST Number</label>
+						<input type="text" id="gst_number" name="gst_number" class="form-control" placeholder="e.g. 27AAAAA1111A1Z1" required/>
+					</div>
+					<div class="form-group">
+						<label for="owner_name">Owner Name</label>
+						<input type="text" id="owner_name" name="owner_name" class="form-control" placeholder="e.g. John Doe" required/>
+					</div>
+					<div class="form-group">
+						<label for="owner_email">Owner Email</label>
+						<input type="email" id="owner_email" name="owner_email" class="form-control" placeholder="e.g. john@example.com" required/>
+					</div>
+					<div class="form-group">
+						<label for="phone">Owner Phone Number</label>
+						<input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. +919876543210" required/>
+					</div>
+					<button type="submit" class="btn">Register & Send OTP</button>
+				</form>
+			</div>
+		</body>
+	</html>
+}
+
+templ VerifyPage(orgID string, phone string, errStr string) {
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>Verify Phone Number - LoomBloom</title>
+			<style>
+				@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+				:root {
+					color-scheme: dark;
+					--ink: #f8fafc;
+					--muted: #94a3b8;
+					--line: rgba(99, 102, 241, 0.12);
+					--paper: #05070f;
+					--panel: rgba(13, 17, 35, 0.65);
+					--accent: #00e5ff;
+					--accent-2: #c084fc;
+					--neon-blue: #00e5ff;
+					--neon-purple: #c084fc;
+					--deep-purple: #7c3aed;
+					--danger: #ff1744;
+					--ok: #00e676;
+				}
+				* { box-sizing: border-box; }
+				body {
+					margin: 0;
+					font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+					color: var(--ink);
+					background: radial-gradient(circle at 50% 0%, #150d30 0%, #05070f 75%);
+					background-attachment: fixed;
+					min-height: 100vh;
+					display: grid;
+					place-items: center;
+					padding: 24px;
+				}
+				.container {
+					width: 100%;
+					max-width: 440px;
+					background: var(--panel);
+					border: 1px solid var(--line);
+					border-radius: 16px;
+					padding: 36px;
+					backdrop-filter: blur(16px);
+					box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 229, 255, 0.05);
+					text-align: center;
+				}
+				.brand {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 12px;
+					margin-bottom: 32px;
+				}
+				.mark {
+					display: grid;
+					place-items: center;
+					width: 44px;
+					height: 44px;
+					border-radius: 12px;
+					background: linear-gradient(135deg, var(--neon-blue), var(--deep-purple));
+					color: #05070f;
+					font-weight: 800;
+					font-size: 18px;
+					box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+					font-family: 'Outfit', sans-serif;
+				}
+				.brand h1 {
+					font-family: 'Outfit', sans-serif;
+					font-size: 24px;
+					font-weight: 700;
+					margin: 0;
+					letter-spacing: -0.5px;
+				}
+				.header-text {
+					margin-bottom: 28px;
+				}
+				.header-text h2 {
+					font-family: 'Outfit', sans-serif;
+					font-size: 20px;
+					font-weight: 600;
+					margin: 0 0 8px 0;
+					color: var(--neon-purple);
+				}
+				.header-text p {
+					font-size: 14px;
+					color: var(--muted);
+					margin: 0;
+					line-height: 1.5;
+				}
+				.phone-highlight {
+					color: var(--neon-blue);
+					font-weight: 600;
+				}
+				.form-group {
+					margin-bottom: 24px;
+				}
+				.otp-inputs {
+					display: flex;
+					gap: 8px;
+					justify-content: center;
+					margin-bottom: 20px;
+				}
+				.otp-inputs input {
+					width: 50px;
+					height: 54px;
+					text-align: center;
+					font-size: 24px;
+					font-weight: 700;
+					border: 1px solid rgba(255, 255, 255, 0.1);
+					background: rgba(5, 7, 15, 0.8);
+					border-radius: 10px;
+					color: var(--ink);
+					transition: all 0.2s;
+				}
+				.otp-inputs input:focus {
+					outline: none;
+					border-color: var(--neon-blue);
+					box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
+					background: rgba(5, 7, 15, 0.95);
+				}
+				.btn {
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					width: 100%;
+					height: 44px;
+					border-radius: 8px;
+					font-size: 15px;
+					font-weight: 600;
+					border: 1px solid transparent;
+					cursor: pointer;
+					transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+					font-family: inherit;
+					background: linear-gradient(135deg, var(--neon-blue), var(--deep-purple));
+					color: #05070f;
+					box-shadow: 0 4px 15px rgba(0, 229, 255, 0.2);
+				}
+				.btn:hover {
+					transform: translateY(-1px);
+					box-shadow: 0 6px 20px rgba(0, 229, 255, 0.35), 0 0 10px rgba(192, 132, 252, 0.25);
+				}
+				.resend-container {
+					margin-top: 20px;
+					font-size: 13px;
+					color: var(--muted);
+				}
+				.resend-link {
+					color: var(--neon-purple);
+					text-decoration: none;
+					font-weight: 600;
+					background: none;
+					border: none;
+					padding: 0;
+					cursor: pointer;
+					font-family: inherit;
+				}
+				.resend-link:hover {
+					text-decoration: underline;
+				}
+				.alert {
+					padding: 12px 16px;
+					border-radius: 8px;
+					margin-bottom: 20px;
+					font-size: 14px;
+					background: rgba(255, 23, 68, 0.12);
+					border: 1px solid rgba(255, 23, 68, 0.2);
+					color: var(--danger);
+				}
+				.info-alert {
+					padding: 10px 14px;
+					border-radius: 8px;
+					margin-bottom: 20px;
+					font-size: 12px;
+					background: rgba(0, 229, 255, 0.08);
+					border: 1px solid rgba(0, 229, 255, 0.15);
+					color: var(--neon-blue);
+				}
+			</style>
+		</head>
+		<body>
+			<div class="container">
+				<div class="brand">
+					<div class="mark">LB</div>
+					<h1>LoomBloom</h1>
+				</div>
+				<div class="header-text">
+					<h2>Verify Phone Number</h2>
+					<p>We've sent a 6-digit OTP code to the phone number <span class="phone-highlight">{ phone }</span></p>
+				</div>
+				
+				if errStr != "" {
+					<div class="alert">{ errStr }</div>
+				}
+
+				<div class="info-alert">
+					<strong>Local Testing Notice:</strong> The OTP code has been logged to the server logs. Check your terminal output!
+				</div>
+
+				<form method="POST" action="/verify">
+					<input type="hidden" name="org_id" value={ orgID }/>
+					<div class="form-group">
+						<div class="otp-inputs">
+							<input type="text" name="otp_1" maxlength="1" required autofocus oninput="if(this.value.length==1) this.form.otp_2.focus()"/>
+							<input type="text" name="otp_2" maxlength="1" required oninput="if(this.value.length==1) this.form.otp_3.focus()" onkeydown="if(event.key=='Backspace' && this.value.length==0) this.form.otp_1.focus()"/>
+							<input type="text" name="otp_3" maxlength="1" required oninput="if(this.value.length==1) this.form.otp_4.focus()" onkeydown="if(event.key=='Backspace' && this.value.length==0) this.form.otp_2.focus()"/>
+							<input type="text" name="otp_4" maxlength="1" required oninput="if(this.value.length==1) this.form.otp_5.focus()" onkeydown="if(event.key=='Backspace' && this.value.length==0) this.form.otp_3.focus()"/>
+							<input type="text" name="otp_5" maxlength="1" required oninput="if(this.value.length==1) this.form.otp_6.focus()" onkeydown="if(event.key=='Backspace' && this.value.length==0) this.form.otp_4.focus()"/>
+							<input type="text" name="otp_6" maxlength="1" required onkeydown="if(event.key=='Backspace' && this.value.length==0) this.form.otp_5.focus()"/>
+						</div>
+					</div>
+					<button type="submit" class="btn">Verify Code</button>
+				</form>
+				
+				<div class="resend-container">
+					Didn't receive the code? 
+					<form method="POST" action="/verify/resend" style="display:inline;">
+						<input type="hidden" name="org_id" value={ orgID }/>
+						<button type="submit" class="resend-link">Resend OTP</button>
+					</form>
+				</div>
+			</div>
+			
+			<script>
+				// Automatically focus next input and handle paste
+				document.querySelector('.otp-inputs').addEventListener('paste', (e) => {
+					e.preventDefault();
+					const data = e.clipboardData.getData('text').trim();
+					if (data.length === 6 && /^\d+$/.test(data)) {
+						const inputs = document.querySelectorAll('.otp-inputs input');
+						for (let i = 0; i < 6; i++) {
+							inputs[i].value = data[i];
+						}
+						inputs[5].focus();
+					}
+				});
+			</script>
+		</body>
+	</html>
+}
+
+templ PlansPage(org store.Organization, errStr string) {
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>Select a Subscription Plan - LoomBloom</title>
+			<style>
+				@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+				:root {
+					color-scheme: dark;
+					--ink: #f8fafc;
+					--muted: #94a3b8;
+					--line: rgba(99, 102, 241, 0.12);
+					--paper: #05070f;
+					--panel: rgba(13, 17, 35, 0.65);
+					--accent: #00e5ff;
+					--accent-2: #c084fc;
+					--neon-blue: #00e5ff;
+					--neon-purple: #c084fc;
+					--deep-purple: #7c3aed;
+					--danger: #ff1744;
+					--ok: #00e676;
+				}
+				* { box-sizing: border-box; }
+				body {
+					margin: 0;
+					font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+					color: var(--ink);
+					background: radial-gradient(circle at 50% 0%, #150d30 0%, #05070f 75%);
+					background-attachment: fixed;
+					min-height: 100vh;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					padding: 40px 24px;
+				}
+				.header {
+					text-align: center;
+					margin-bottom: 48px;
+					max-width: 600px;
+				}
+				.brand {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 12px;
+					margin-bottom: 24px;
+				}
+				.mark {
+					display: grid;
+					place-items: center;
+					width: 44px;
+					height: 44px;
+					border-radius: 12px;
+					background: linear-gradient(135deg, var(--neon-blue), var(--deep-purple));
+					color: #05070f;
+					font-weight: 800;
+					font-size: 18px;
+					box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+					font-family: 'Outfit', sans-serif;
+				}
+				.brand h1 {
+					font-family: 'Outfit', sans-serif;
+					font-size: 26px;
+					font-weight: 700;
+					margin: 0;
+					letter-spacing: -0.5px;
+				}
+				.header h2 {
+					font-family: 'Outfit', sans-serif;
+					font-size: 32px;
+					font-weight: 700;
+					margin: 0 0 12px 0;
+					background: linear-gradient(to right, #ffffff, #94a3b8);
+					-webkit-background-clip: text;
+					-webkit-text-fill-color: transparent;
+				}
+				.header p {
+					font-size: 16px;
+					color: var(--muted);
+					margin: 0;
+					line-height: 1.5;
+				}
+				.plans-grid {
+					display: grid;
+					grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+					gap: 32px;
+					width: 100%;
+					max-width: 960px;
+					margin-bottom: 48px;
+				}
+				.plan-card {
+					background: var(--panel);
+					border: 1px solid var(--line);
+					border-radius: 16px;
+					padding: 40px 32px;
+					display: flex;
+					flex-direction: column;
+					backdrop-filter: blur(16px);
+					box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+					position: relative;
+					transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+					overflow: hidden;
+				}
+				.plan-card:hover {
+					border-color: rgba(0, 229, 255, 0.25);
+					box-shadow: 0 12px 40px rgba(0, 229, 255, 0.06), 0 0 15px rgba(192, 132, 252, 0.05);
+					transform: translateY(-4px);
+				}
+				.plan-card.popular {
+					border-color: rgba(192, 132, 252, 0.4);
+					box-shadow: 0 8px 32px 0 rgba(192, 132, 252, 0.08);
+				}
+				.plan-card.popular:hover {
+					border-color: var(--neon-purple);
+					box-shadow: 0 12px 40px rgba(192, 132, 252, 0.15), 0 0 20px rgba(0, 229, 255, 0.08);
+				}
+				.badge {
+					position: absolute;
+					top: 16px;
+					right: 16px;
+					background: linear-gradient(135deg, var(--neon-purple), var(--deep-purple));
+					color: #05070f;
+					font-size: 11px;
+					font-weight: 700;
+					padding: 4px 10px;
+					border-radius: 999px;
+					text-transform: uppercase;
+					letter-spacing: 0.5px;
+				}
+				.plan-name {
+					font-family: 'Outfit', sans-serif;
+					font-size: 22px;
+					font-weight: 600;
+					margin-bottom: 8px;
+					color: var(--ink);
+				}
+				.plan-card.popular .plan-name {
+					color: var(--neon-purple);
+				}
+				.plan-desc {
+					font-size: 13px;
+					color: var(--muted);
+					margin-bottom: 24px;
+					min-height: 36px;
+				}
+				.plan-price {
+					margin-bottom: 28px;
+					display: flex;
+					align-items: baseline;
+					gap: 4px;
+				}
+				.price {
+					font-family: 'Outfit', sans-serif;
+					font-size: 40px;
+					font-weight: 700;
+					color: var(--ink);
+				}
+				.period {
+					font-size: 14px;
+					color: var(--muted);
+				}
+				.features-list {
+					list-style: none;
+					padding: 0;
+					margin: 0 0 36px 0;
+					flex-grow: 1;
+				}
+				.features-list li {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					font-size: 14px;
+					color: var(--ink);
+					margin-bottom: 12px;
+				}
+				.features-list li::before {
+					content: "✓";
+					color: var(--ok);
+					font-weight: 700;
+				}
+				.btn-select {
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					width: 100%;
+					height: 44px;
+					border-radius: 8px;
+					font-size: 15px;
+					font-weight: 600;
+					border: 1px solid rgba(255, 255, 255, 0.08);
+					cursor: pointer;
+					background: rgba(255, 255, 255, 0.03);
+					color: var(--ink);
+					transition: all 0.2s;
+					font-family: inherit;
+					text-decoration: none;
+				}
+				.btn-select:hover {
+					background: rgba(255, 255, 255, 0.08);
+					border-color: rgba(255, 255, 255, 0.15);
+				}
+				.plan-card.popular .btn-select {
+					background: linear-gradient(135deg, var(--neon-blue), var(--deep-purple));
+					color: #05070f;
+					border: none;
+					box-shadow: 0 4px 15px rgba(0, 229, 255, 0.15);
+				}
+				.plan-card.popular .btn-select:hover {
+					transform: translateY(-1px);
+					box-shadow: 0 6px 20px rgba(0, 229, 255, 0.3), 0 0 10px rgba(192, 132, 252, 0.2);
+				}
+				.alert {
+					padding: 12px 16px;
+					border-radius: 8px;
+					margin-bottom: 24px;
+					font-size: 14px;
+					background: rgba(255, 23, 68, 0.12);
+					border: 1px solid rgba(255, 23, 68, 0.2);
+					color: var(--danger);
+					max-width: 600px;
+					width: 100%;
+					text-align: center;
+				}
+				.simulate-notice {
+					font-size: 12px;
+					color: var(--muted);
+					text-align: center;
+					margin-top: 16px;
+				}
+			</style>
+		</head>
+		<body>
+			<div class="header">
+				<div class="brand">
+					<div class="mark">LB</div>
+					<h1>LoomBloom</h1>
+				</div>
+				<h2>Choose Your Enterprise Plan</h2>
+				<p>Scale your loom operations with precise tracking, worker payroll details, and real-time production metrics.</p>
+			</div>
+
+			if errStr != "" {
+				<div class="alert">{ errStr }</div>
+			}
+
+			<div class="plans-grid">
+				<!-- Starter Plan -->
+				<div class="plan-card">
+					<div class="plan-name">Starter</div>
+					<div class="plan-desc">For small loom owners getting started.</div>
+					<div class="plan-price">
+						<span class="price">₹1,499</span>
+						<span class="period">/ month</span>
+					</div>
+					<ul class="features-list">
+						<li>Up to 10 Looms / Machines</li>
+						<li>Up to 15 Workers</li>
+						<li>Production Log Book</li>
+						<li>Basic Stock Control</li>
+						<li>Email Support</li>
+					</ul>
+					<form method="POST" action="/checkout">
+						<input type="hidden" name="plan" value="starter"/>
+						<button type="submit" class="btn-select">Select Starter</button>
+					</form>
+					<div class="simulate-notice">Billed monthly</div>
+				</div>
+
+				<!-- Pro Plan -->
+				<div class="plan-card popular">
+					<div class="badge">Most Popular</div>
+					<div class="plan-name">Pro Bloom</div>
+					<div class="plan-desc">For medium/large loom manufacturers.</div>
+					<div class="plan-price">
+						<span class="price">₹2,999</span>
+						<span class="period">/ month</span>
+					</div>
+					<ul class="features-list">
+						<li>Unlimited Looms / Machines</li>
+						<li>Unlimited Workers</li>
+						<li>Advanced Production Metrics</li>
+						<li>Stock Tracking & alerts</li>
+						<li>Priority 24/7 Support</li>
+						<li>Shift Management Logs</li>
+					</ul>
+					<form method="POST" action="/checkout">
+						<input type="hidden" name="plan" value="pro"/>
+						<button type="submit" class="btn-select">Select Pro</button>
+					</form>
+					<div class="simulate-notice">Billed monthly</div>
+				</div>
+
+				<!-- Enterprise Plan -->
+				<div class="plan-card">
+					<div class="plan-name">Enterprise</div>
+					<div class="plan-desc">Custom integrations & multiple factories.</div>
+					<div class="plan-price">
+						<span class="price">₹5,999</span>
+						<span class="period">/ month</span>
+					</div>
+					<ul class="features-list">
+						<li>Multi-Factory Administration</li>
+						<li>Custom API Integrations</li>
+						<li>Dedicated Account Rep</li>
+						<li>SLA Guaranteed Uptime</li>
+						<li>Custom Reporting Modules</li>
+					</ul>
+					<form method="POST" action="/checkout">
+						<input type="hidden" name="plan" value="enterprise"/>
+						<button type="submit" class="btn-select">Select Enterprise</button>
+					</form>
+					<div class="simulate-notice">Billed monthly</div>
+				</div>
+			</div>
+		</body>
+	</html>
+}

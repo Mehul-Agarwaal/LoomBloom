@@ -45,7 +45,18 @@ func (api API) Routes() http.Handler {
 	mux.HandleFunc("GET /api/v1/organizations/{organizationID}/production", api.listProductionEntries)
 	mux.HandleFunc("POST /api/v1/organizations/{organizationID}/production", api.createProductionEntry)
 
-	return api.withMiddleware(mux)
+	mux.HandleFunc("GET /setup", api.setupPageHandler)
+	mux.HandleFunc("POST /setup", api.setupPageHandler)
+	mux.HandleFunc("GET /verify", api.verifyPageHandler)
+	mux.HandleFunc("POST /verify", api.verifyPageHandler)
+	mux.HandleFunc("POST /verify/resend", api.verifyResendHandler)
+	mux.HandleFunc("GET /plans", api.plansPageHandler)
+	mux.HandleFunc("POST /checkout", api.checkoutHandler)
+	mux.HandleFunc("GET /payment/checkout", api.mockCheckoutPageHandler)
+	mux.HandleFunc("POST /payment/callback", api.mockPaymentCallbackHandler)
+	mux.HandleFunc("GET /logout", api.logoutHandler)
+
+	return api.withMiddleware(api.OnboardingMiddleware(mux))
 }
 
 func (api API) withMiddleware(next http.Handler) http.Handler {

@@ -5,8 +5,11 @@ import "time"
 type Organization struct {
 	ID               string    `json:"id"`
 	Name             string    `json:"name"`
+	GSTNumber        string    `json:"gst_number"`
 	OwnerName        string    `json:"owner_name"`
+	OwnerEmail       string    `json:"owner_email"`
 	Phone            string    `json:"phone"`
+	PhoneVerified    bool      `json:"phone_verified"`
 	SubscriptionPlan string    `json:"subscription_plan"`
 	CreatedAt        time.Time `json:"created_at"`
 }
@@ -54,3 +57,12 @@ type ProductionEntry struct {
 	Unit           string    `json:"unit"`
 	CreatedAt      time.Time `json:"created_at"`
 }
+
+type Session struct {
+	ID             string    `json:"id"`
+	OrganizationID string    `json:"organization_id"`
+	Token          string    `json:"token"`
+	ExpiresAt      time.Time `json:"expires_at"`
+	CreatedAt      time.Time `json:"created_at"`
+}
+
