@@ -1,3 +1,5 @@
+include .env
+
 APP_NAME := loombloom
 BIN_DIR := bin
 SERVER := ./cmd/server
@@ -27,10 +29,10 @@ vet:
 	go vet ./...
 
 migrate-up:
-	psql "$$DATABASE_URL" -f $(MIGRATIONS_DIR)/001_init.up.sql
+	psql "$(DATABASE_URL)" -f $(MIGRATIONS_DIR)/001_init.up.sql
 
 seed-dev:
-	psql "$$DATABASE_URL" -f $(MIGRATIONS_DIR)/002_seed.dev.sql
+	psql "$(DATABASE_URL)" -f $(MIGRATIONS_DIR)/002_seed.dev.sql
 
 migrate-down:
-	psql "$$DATABASE_URL" -f $(MIGRATIONS_DIR)/001_init.down.sql
+	psql "$(DATABASE_URL)" -f $(MIGRATIONS_DIR)/001_init.down.sql

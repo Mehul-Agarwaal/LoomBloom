@@ -1,0 +1,293 @@
+package views
+
+templ CalendarWidget() {
+	<div class="calendar-widget section">
+		<header>
+			<h3 style="display: flex; align-items: center; gap: 8px;">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+				Calendar
+			</h3>
+			<div class="calendar-nav">
+				<button id="prev-month" class="cal-btn">&lt;</button>
+				<span id="current-month-year" style="font-weight: 600; font-size: 14px; color: var(--ink);"></span>
+				<button id="next-month" class="cal-btn">&gt;</button>
+			</div>
+		</header>
+		<div class="calendar-body" style="padding: 16px 18px;">
+			<div class="calendar-grid">
+				<div class="cal-day-header">Su</div>
+				<div class="cal-day-header">Mo</div>
+				<div class="cal-day-header">Tu</div>
+				<div class="cal-day-header">We</div>
+				<div class="cal-day-header">Th</div>
+				<div class="cal-day-header">Fr</div>
+				<div class="cal-day-header">Sa</div>
+			</div>
+			<div id="calendar-days" class="calendar-grid">
+				<!-- Dates injected by JS -->
+			</div>
+		</div>
+		<div id="task-panel" class="task-panel">
+			<div class="task-header">
+				<h4 id="selected-date-title">Tasks for Today</h4>
+			</div>
+			<div class="task-list">
+				<a href="/production" class="task-item">
+					<div class="task-icon" style="background: rgba(0, 229, 255, 0.1); color: var(--neon-blue);">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+					</div>
+					<div class="task-content">
+						<strong>Log Production</strong>
+						<span>Record today's output</span>
+					</div>
+					<div class="task-arrow">→</div>
+				</a>
+				<a href="/workers" class="task-item">
+					<div class="task-icon" style="background: rgba(192, 132, 252, 0.1); color: var(--neon-purple);">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+					</div>
+					<div class="task-content">
+						<strong>Worker Attendance</strong>
+						<span>Manage active weavers</span>
+					</div>
+					<div class="task-arrow">→</div>
+				</a>
+				<a href="/inventory" class="task-item">
+					<div class="task-icon" style="background: rgba(0, 230, 118, 0.1); color: var(--ok);">
+						<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+					</div>
+					<div class="task-content">
+						<strong>Update Inventory</strong>
+						<span>Manage raw materials</span>
+					</div>
+					<div class="task-arrow">→</div>
+				</a>
+			</div>
+		</div>
+		
+		<style>
+			.calendar-widget {
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+				min-height: 480px;
+			}
+			.calendar-nav {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.cal-btn {
+				background: rgba(255, 255, 255, 0.05);
+				border: 1px solid var(--line);
+				color: var(--ink);
+				width: 28px;
+				height: 28px;
+				border-radius: 6px;
+				cursor: pointer;
+				display: grid;
+				place-items: center;
+				font-size: 14px;
+				transition: all 0.2s ease;
+			}
+			.cal-btn:hover {
+				background: rgba(0, 229, 255, 0.1);
+				border-color: rgba(0, 229, 255, 0.3);
+				color: var(--neon-blue);
+			}
+			.calendar-grid {
+				display: grid;
+				grid-template-columns: repeat(7, 1fr);
+				gap: 4px;
+				text-align: center;
+			}
+			.cal-day-header {
+				font-size: 11px;
+				font-weight: 600;
+				color: var(--muted);
+				text-transform: uppercase;
+				padding-bottom: 8px;
+			}
+			.cal-date {
+				aspect-ratio: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 13px;
+				border-radius: 6px;
+				cursor: pointer;
+				transition: all 0.2s ease;
+				border: 1px solid transparent;
+				color: var(--ink);
+			}
+			.cal-date:hover:not(.empty) {
+				background: rgba(255, 255, 255, 0.05);
+				border-color: var(--line);
+			}
+			.cal-date.today {
+				color: var(--neon-blue);
+				font-weight: 700;
+				background: rgba(0, 229, 255, 0.08);
+				border-color: rgba(0, 229, 255, 0.2);
+			}
+			.cal-date.selected {
+				background: var(--neon-purple);
+				color: #000;
+				font-weight: 700;
+				box-shadow: 0 0 12px rgba(192, 132, 252, 0.4);
+			}
+			.cal-date.empty {
+				cursor: default;
+			}
+			
+			.task-panel {
+				border-top: 1px solid var(--line);
+				background: rgba(0, 0, 0, 0.2);
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+			}
+			.task-header {
+				padding: 12px 18px;
+				border-bottom: 1px solid var(--line);
+			}
+			.task-header h4 {
+				font-size: 14px;
+				font-weight: 600;
+				color: var(--neon-purple);
+				margin: 0;
+			}
+			.task-list {
+				display: flex;
+				flex-direction: column;
+				padding: 12px 18px;
+				gap: 8px;
+			}
+			.task-item {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				padding: 10px 12px;
+				background: rgba(255, 255, 255, 0.02);
+				border: 1px solid var(--line);
+				border-radius: 8px;
+				text-decoration: none;
+				color: var(--ink);
+				transition: all 0.2s ease;
+			}
+			.task-item:hover {
+				background: rgba(255, 255, 255, 0.05);
+				border-color: rgba(0, 229, 255, 0.3);
+				transform: translateX(4px);
+			}
+			.task-icon {
+				width: 32px;
+				height: 32px;
+				border-radius: 8px;
+				display: grid;
+				place-items: center;
+			}
+			.task-content {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 2px;
+			}
+			.task-content strong {
+				font-size: 13px;
+				font-weight: 600;
+			}
+			.task-content span {
+				font-size: 11px;
+				color: var(--muted);
+			}
+			.task-arrow {
+				color: var(--muted);
+				font-size: 16px;
+				transition: transform 0.2s ease;
+			}
+			.task-item:hover .task-arrow {
+				transform: translateX(2px);
+				color: var(--neon-blue);
+			}
+		</style>
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+				const monthYearEl = document.getElementById("current-month-year");
+				const daysEl = document.getElementById("calendar-days");
+				const selectedDateTitle = document.getElementById("selected-date-title");
+				
+				let currentDate = new Date();
+				let selectedDate = new Date();
+				
+				const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+				
+				function renderCalendar() {
+					const year = currentDate.getFullYear();
+					const month = currentDate.getMonth();
+					
+					monthYearEl.textContent = `${monthNames[month]} ${year}`;
+					daysEl.innerHTML = "";
+					
+					const firstDay = new Date(year, month, 1).getDay();
+					const daysInMonth = new Date(year, month + 1, 0).getDate();
+					
+					// Empty slots before 1st of month
+					for (let i = 0; i < firstDay; i++) {
+						const emptyDiv = document.createElement("div");
+						emptyDiv.className = "cal-date empty";
+						daysEl.appendChild(emptyDiv);
+					}
+					
+					const today = new Date();
+					
+					// Days of the month
+					for (let i = 1; i <= daysInMonth; i++) {
+						const dateDiv = document.createElement("div");
+						dateDiv.className = "cal-date";
+						dateDiv.textContent = i;
+						
+						const isToday = today.getDate() === i && today.getMonth() === month && today.getFullYear() === year;
+						const isSelected = selectedDate.getDate() === i && selectedDate.getMonth() === month && selectedDate.getFullYear() === year;
+						
+						if (isToday) dateDiv.classList.add("today");
+						if (isSelected) dateDiv.classList.add("selected");
+						
+						dateDiv.addEventListener("click", () => {
+							selectedDate = new Date(year, month, i);
+							updateSelectedDateTitle();
+							renderCalendar();
+						});
+						
+						daysEl.appendChild(dateDiv);
+					}
+				}
+				
+				function updateSelectedDateTitle() {
+					const options = { weekday: 'long', month: 'short', day: 'numeric' };
+					const today = new Date();
+					
+					if (selectedDate.toDateString() === today.toDateString()) {
+						selectedDateTitle.textContent = "Tasks for Today";
+					} else {
+						selectedDateTitle.textContent = "Tasks for " + selectedDate.toLocaleDateString('en-US', options);
+					}
+				}
+				
+				document.getElementById("prev-month").addEventListener("click", () => {
+					currentDate.setMonth(currentDate.getMonth() - 1);
+					renderCalendar();
+				});
+				
+				document.getElementById("next-month").addEventListener("click", () => {
+					currentDate.setMonth(currentDate.getMonth() + 1);
+					renderCalendar();
+				});
+				
+				updateSelectedDateTitle();
+				renderCalendar();
+			});
+		</script>
+	</div>
+}

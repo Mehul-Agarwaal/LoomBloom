@@ -12,6 +12,7 @@ templ MachinesPage(org store.Organization, machines []store.Machine, errStr stri
 				<h2>Machines ({ org.Name })</h2>
 				<p>Manage loom machines, their specifications, and operation status.</p>
 			</div>
+			<a href="/machines/new" class="btn btn-primary">Add Machine</a>
 		</div>
 
 		if errStr != "" {
@@ -20,52 +21,74 @@ templ MachinesPage(org store.Organization, machines []store.Machine, errStr stri
 			</div>
 		}
 
-		<div class="two-col">
-			<div class="section">
-				<header>
-					<h3>Registered Looms</h3>
-					<span class="subtle">{ fmt.Sprintf("%d total", len(machines)) }</span>
-				</header>
-				if len(machines) == 0 {
-					<p class="empty">No machines registered. Use the panel on the right to add one.</p>
-				} else {
-					<table>
-						<thead>
+		<div class="section">
+			<header>
+				<h3>Registered Looms</h3>
+				<span class="subtle">{ fmt.Sprintf("%d total", len(machines)) }</span>
+			</header>
+			if len(machines) == 0 {
+				<p class="empty">No machines registered. Click "Add Machine" to get started.</p>
+			} else {
+				<table>
+					<thead>
+						<tr>
+							<th>Machine Number</th>
+							<th>Size</th>
+							<th>Type</th>
+							<th>Status</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						for _, m := range machines {
 							<tr>
-								<th>Machine Number</th>
-								<th>Size</th>
-								<th>Type</th>
-								<th>Status</th>
+								<td style="font-weight: 600;">{ m.MachineNumber }</td>
+								<td>{ m.Size }</td>
+								<td>{ m.Type }</td>
+								<td>
+									if m.Status == "maintenance" {
+										<span class="status warn">{ m.Status }</span>
+									} else {
+										<span class="status">{ m.Status }</span>
+									}
+								</td>
+								<td>
+									<a href={ templ.URL(fmt.Sprintf("/machines/%s", m.ID)) } style="color: var(--neon-blue); text-decoration: none; font-size: 13px;">View</a>
+								</td>
 							</tr>
-						</thead>
-						<tbody>
-							for _, m := range machines {
-								<tr>
-									<td style="font-weight: 600;">{ m.MachineNumber }</td>
-									<td>{ m.Size }</td>
-									<td>{ m.Type }</td>
-									<td>
-										if m.Status == "maintenance" {
-											<span class="status warn">{ m.Status }</span>
-										} else {
-											<span class="status">{ m.Status }</span>
-										}
-									</td>
-								</tr>
-							}
-						</tbody>
-					</table>
-				}
-			</div>
+						}
+					</tbody>
+				</table>
+			}
+		</div>
+	}
+}
 
-			<div>
-				<div class="form-card">
-					<h3>Add New Loom</h3>
-					<form action="/machines" method="POST">
-						<div class="form-group">
-							<label for="machine_number">Machine Number *</label>
-							<input type="text" id="machine_number" name="machine_number" class="form-control" placeholder="e.g. Loom-004" required />
-						</div>
+templ MachineFormPage(org store.Organization, errStr string) {
+	@PageLayout("Add Machine", org, "machines") {
+		<div class="page-header">
+			<div class="page-title">
+				<h2>Add New Machine</h2>
+				<p>Register a new loom for your factory.</p>
+			</div>
+			<a href="/machines" class="btn" style="border: 1px solid var(--line); color: var(--ink);">Back to List</a>
+		</div>
+
+		if errStr != "" {
+			<div class="alert alert-danger">
+				<strong>Error:</strong> { errStr }
+			</div>
+		}
+
+		<div style="max-width: 600px; margin: 0 auto;">
+			<div class="form-card" style="position: static;">
+				<h3>Loom Details</h3>
+				<form action="/machines" method="POST">
+					<div class="form-group">
+						<label for="machine_number">Machine Number *</label>
+						<input type="text" id="machine_number" name="machine_number" class="form-control" placeholder="e.g. Loom-004" required />
+					</div>
+					<div class="form-row">
 						<div class="form-group">
 							<label for="size">Size</label>
 							<input type="text" id="size" name="size" class="form-control" placeholder="e.g. 56 inch" />
@@ -74,17 +97,61 @@ templ MachinesPage(org store.Organization, machines []store.Machine, errStr stri
 							<label for="type">Type</label>
 							<input type="text" id="type" name="type" class="form-control" placeholder="e.g. auto, power, manual" />
 						</div>
-						<div class="form-group">
-							<label for="status">Status</label>
-							<select id="status" name="status" class="form-control">
-								<option value="active" selected>Active</option>
-								<option value="maintenance">Maintenance</option>
-							</select>
-						</div>
-						<button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">Register Machine</button>
-					</form>
+					</div>
+					<div class="form-group">
+						<label for="status">Status</label>
+						<select id="status" name="status" class="form-control">
+							<option value="active" selected>Active</option>
+							<option value="maintenance">Maintenance</option>
+						</select>
+					</div>
+					<button type="submit" class="btn btn-primary btn-block" style="margin-top: 16px;">Register Machine</button>
+				</form>
+			</div>
+		</div>
+	}
+}
+
+templ MachineDetailPage(org store.Organization, machine store.Machine) {
+	@PageLayout(fmt.Sprintf("Machine %s", machine.MachineNumber), org, "machines") {
+		<div class="page-header">
+			<div class="page-title">
+				<h2>Machine: { machine.MachineNumber }</h2>
+				<p>Detailed performance and maintenance log.</p>
+			</div>
+			<a href="/machines" class="btn" style="border: 1px solid var(--line); color: var(--ink);">Back to List</a>
+		</div>
+
+		<div class="section" style="margin-bottom: 24px; padding: 24px;">
+			<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+				<div>
+					<p class="subtle">Status</p>
+					if machine.Status == "maintenance" {
+						<span class="status warn" style="margin-top: 8px;">{ machine.Status }</span>
+					} else {
+						<span class="status" style="margin-top: 8px;">{ machine.Status }</span>
+					}
+				</div>
+				<div>
+					<p class="subtle">Size</p>
+					<p style="font-size: 18px; font-weight: 600; margin-top: 4px;">{ machine.Size }</p>
+				</div>
+				<div>
+					<p class="subtle">Type</p>
+					<p style="font-size: 18px; font-weight: 600; margin-top: 4px;">{ machine.Type }</p>
+				</div>
+				<div>
+					<p class="subtle">Registered</p>
+					<p style="font-size: 18px; font-weight: 600; margin-top: 4px;">{ machine.CreatedAt.Format("Jan 02, 2006") }</p>
 				</div>
 			</div>
+		</div>
+
+		<div class="section">
+			<header>
+				<h3>Recent Production History (Mock)</h3>
+			</header>
+			<p class="empty">Production records for this machine will appear here.</p>
 		</div>
 	}
 }

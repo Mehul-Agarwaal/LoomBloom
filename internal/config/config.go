@@ -23,7 +23,7 @@ func Load() (Config, error) {
 
 	cfg := Config{
 		AppEnv:          getEnv("APP_ENV", "development"),
-		HTTPAddr:        getEnv("HTTP_ADDR", ":8080"),
+		HTTPAddr:        getEnv("HTTP_ADDR", getPortFallback()),
 		DatabaseURL:     os.Getenv("DATABASE_URL"),
 		ReadTimeout:     getDuration("READ_TIMEOUT", 5*time.Second),
 		WriteTimeout:    getDuration("WRITE_TIMEOUT", 10*time.Second),
@@ -77,6 +77,13 @@ func getEnv(key, fallback string) string {
 		return value
 	}
 	return fallback
+}
+
+func getPortFallback() string {
+	if port := os.Getenv("PORT"); port != "" {
+		return ":" + port
+	}
+	return ":8080"
 }
 
 func getDuration(key string, fallback time.Duration) time.Duration {

@@ -324,10 +324,11 @@ templ PageLayout(title string, org store.Organization, activeTab string) {
 						</a>
 						<nav class="nav-tabs">
 							<a href="/" class={ templ.KV("active", activeTab == "dashboard") }>Dashboard</a>
+							<a href="/production" class={ templ.KV("active", activeTab == "production") }>Production</a>
 							<a href="/machines" class={ templ.KV("active", activeTab == "machines") }>Machines</a>
 							<a href="/workers" class={ templ.KV("active", activeTab == "workers") }>Workers</a>
-							<a href="/stock" class={ templ.KV("active", activeTab == "stock") }>Stock</a>
-							<a href="/production" class={ templ.KV("active", activeTab == "production") }>Production</a>
+							<a href="/inventory" class={ templ.KV("active", activeTab == "inventory") }>Inventory</a>
+							<a href="/settings" class={ templ.KV("active", activeTab == "settings") }>Settings</a>
 						</nav>
 					</div>
 					if org.ID != "" {
