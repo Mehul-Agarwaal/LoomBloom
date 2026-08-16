@@ -123,6 +123,48 @@ func (s Store) GetOrganization(ctx context.Context, id string) (Organization, er
 	return org, err
 }
 
+func (s Store) GetOrganizationByEmail(ctx context.Context, email string) (Organization, error) {
+	const query = `
+		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, created_at
+		FROM organizations
+		WHERE owner_email = $1
+		LIMIT 1`
+	var org Organization
+	err := s.db.QueryRowContext(ctx, query, email).Scan(
+		&org.ID,
+		&org.Name,
+		&org.GSTNumber,
+		&org.OwnerName,
+		&org.OwnerEmail,
+		&org.Phone,
+		&org.PhoneVerified,
+		&org.SubscriptionPlan,
+		&org.CreatedAt,
+	)
+	return org, err
+}
+
+func (s Store) GetOrganizationByPhone(ctx context.Context, phone string) (Organization, error) {
+	const query = `
+		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, created_at
+		FROM organizations
+		WHERE phone = $1
+		LIMIT 1`
+	var org Organization
+	err := s.db.QueryRowContext(ctx, query, phone).Scan(
+		&org.ID,
+		&org.Name,
+		&org.GSTNumber,
+		&org.OwnerName,
+		&org.OwnerEmail,
+		&org.Phone,
+		&org.PhoneVerified,
+		&org.SubscriptionPlan,
+		&org.CreatedAt,
+	)
+	return org, err
+}
+
 func (s Store) UpdateOTP(ctx context.Context, orgID string, otp string, expiresAt time.Time) error {
 	const query = `
 		UPDATE organizations

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: loombloom-web
+    env: go
+    buildCommand: make generate && make build
+    startCommand: ./bin/loombloom
+    envVars:
+      - key: GO_VERSION
+        value: 1.25.0
+      - key: APP_ENV
+        value: production
+      - key: HTTP_ADDR
+        value: :8080 # Render injects PORT usually, but if your app uses HTTP_ADDR we'll provide it. (Render expects apps to bind to 0.0.0.0, which :8080 implies)
+      - key: DATABASE_URL
+        sync: false # You will manually paste your Neon URL in the Render dashboard

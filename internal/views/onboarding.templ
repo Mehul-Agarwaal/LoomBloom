@@ -10,7 +10,7 @@ templ SetupPage(errStr string) {
 		<head>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-			<title>Setup Your Enterprise - LoomBloom</title>
+			<title>Register Your Enterprise - LoomBloom</title>
 			<style>
 				@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
@@ -152,6 +152,20 @@ templ SetupPage(errStr string) {
 					border: 1px solid rgba(255, 23, 68, 0.2);
 					color: var(--danger);
 				}
+				.auth-link {
+					text-align: center;
+					margin-top: 20px;
+					font-size: 13px;
+					color: var(--muted);
+				}
+				.auth-link a {
+					color: var(--neon-purple);
+					text-decoration: none;
+					font-weight: 600;
+				}
+				.auth-link a:hover {
+					text-decoration: underline;
+				}
 			</style>
 		</head>
 		<body>
@@ -175,10 +189,6 @@ templ SetupPage(errStr string) {
 						<input type="text" id="name" name="name" class="form-control" placeholder="e.g. Acme Textiles" required/>
 					</div>
 					<div class="form-group">
-						<label for="gst_number">GST Number</label>
-						<input type="text" id="gst_number" name="gst_number" class="form-control" placeholder="e.g. 27AAAAA1111A1Z1" required/>
-					</div>
-					<div class="form-group">
 						<label for="owner_name">Owner Name</label>
 						<input type="text" id="owner_name" name="owner_name" class="form-control" placeholder="e.g. John Doe" required/>
 					</div>
@@ -188,10 +198,245 @@ templ SetupPage(errStr string) {
 					</div>
 					<div class="form-group">
 						<label for="phone">Owner Phone Number</label>
-						<input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. +919876543210" required/>
+						<input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. 9876543210" required/>
 					</div>
-					<button type="submit" class="btn">Register & Send OTP</button>
+					<button type="submit" class="btn">Register &amp; Send OTP</button>
 				</form>
+				<div class="auth-link">
+					Already have an account? <a href="/login">Login</a>
+				</div>
+			</div>
+		</body>
+	</html>
+}
+
+templ LoginPage(errStr string) {
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>Login - LoomBloom</title>
+			<style>
+				@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+				:root {
+					color-scheme: dark;
+					--ink: #f8fafc;
+					--muted: #94a3b8;
+					--line: rgba(99, 102, 241, 0.12);
+					--paper: #05070f;
+					--panel: rgba(13, 17, 35, 0.65);
+					--accent: #00e5ff;
+					--accent-2: #c084fc;
+					--neon-blue: #00e5ff;
+					--neon-purple: #c084fc;
+					--deep-purple: #7c3aed;
+					--danger: #ff1744;
+				}
+				* { box-sizing: border-box; }
+				body {
+					margin: 0;
+					font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+					color: var(--ink);
+					background: radial-gradient(circle at 50% 0%, #150d30 0%, #05070f 75%);
+					background-attachment: fixed;
+					min-height: 100vh;
+					display: grid;
+					place-items: center;
+					padding: 24px;
+				}
+				.container {
+					width: 100%;
+					max-width: 440px;
+					background: var(--panel);
+					border: 1px solid var(--line);
+					border-radius: 16px;
+					padding: 36px;
+					backdrop-filter: blur(16px);
+					box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 229, 255, 0.05);
+				}
+				.brand {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 12px;
+					margin-bottom: 32px;
+				}
+				.mark {
+					display: grid;
+					place-items: center;
+					width: 44px;
+					height: 44px;
+					border-radius: 12px;
+					background: linear-gradient(135deg, var(--neon-blue), var(--deep-purple));
+					color: #05070f;
+					font-weight: 800;
+					font-size: 18px;
+					box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+					font-family: 'Outfit', sans-serif;
+				}
+				.brand h1 {
+					font-family: 'Outfit', sans-serif;
+					font-size: 24px;
+					font-weight: 700;
+					margin: 0;
+					letter-spacing: -0.5px;
+				}
+				.header-text {
+					text-align: center;
+					margin-bottom: 28px;
+				}
+				.header-text h2 {
+					font-family: 'Outfit', sans-serif;
+					font-size: 20px;
+					font-weight: 600;
+					margin: 0 0 8px 0;
+					color: var(--neon-purple);
+				}
+				.header-text p {
+					font-size: 14px;
+					color: var(--muted);
+					margin: 0;
+					line-height: 1.5;
+				}
+				.form-group {
+					margin-bottom: 20px;
+				}
+				.form-group label {
+					display: block;
+					font-size: 13px;
+					font-weight: 600;
+					margin-bottom: 6px;
+					color: var(--muted);
+				}
+				.form-control {
+					width: 100%;
+					height: 42px;
+					padding: 10px 14px;
+					border: 1px solid rgba(255, 255, 255, 0.08);
+					border-radius: 8px;
+					background: rgba(5, 7, 15, 0.7);
+					color: var(--ink);
+					font-family: inherit;
+					font-size: 14px;
+					transition: all 0.2s ease;
+				}
+				.form-control:focus {
+					outline: none;
+					border-color: var(--neon-blue);
+					box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+					background: rgba(5, 7, 15, 0.9);
+				}
+				.btn {
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					width: 100%;
+					height: 44px;
+					border-radius: 8px;
+					font-size: 15px;
+					font-weight: 600;
+					border: 1px solid transparent;
+					cursor: pointer;
+					transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+					font-family: inherit;
+					margin-top: 10px;
+					background: linear-gradient(135deg, var(--neon-blue), var(--deep-purple));
+					color: #05070f;
+					box-shadow: 0 4px 15px rgba(0, 229, 255, 0.2);
+				}
+				.btn:hover {
+					transform: translateY(-1px);
+					box-shadow: 0 6px 20px rgba(0, 229, 255, 0.35), 0 0 10px rgba(192, 132, 252, 0.25);
+				}
+				.alert {
+					padding: 12px 16px;
+					border-radius: 8px;
+					margin-bottom: 20px;
+					font-size: 14px;
+					background: rgba(255, 23, 68, 0.12);
+					border: 1px solid rgba(255, 23, 68, 0.2);
+					color: var(--danger);
+				}
+				.auth-link {
+					text-align: center;
+					margin-top: 20px;
+					font-size: 13px;
+					color: var(--muted);
+				}
+				.auth-link a {
+					color: var(--neon-purple);
+					text-decoration: none;
+					font-weight: 600;
+				}
+				.auth-link a:hover {
+					text-decoration: underline;
+				}
+			</style>
+		</head>
+		<body>
+			<div class="container">
+				<div class="brand">
+					<div class="mark">LB</div>
+					<h1>LoomBloom</h1>
+				</div>
+				<div class="header-text">
+					<h2>Welcome Back</h2>
+					<p>Enter your email or phone number to receive an OTP</p>
+				</div>
+				
+				if errStr != "" {
+					<div class="alert">{ errStr }</div>
+				}
+
+				<form method="POST" action="/login" id="loginForm">
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="email" id="email" name="email" class="form-control" placeholder="e.g. john@example.com" autofocus/>
+					</div>
+					<div style="text-align: center; color: var(--muted); margin-bottom: 20px; font-weight: 600; font-size: 14px;">OR</div>
+					<div class="form-group">
+						<label for="phone">Phone Number</label>
+						<input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. 9876543210"/>
+					</div>
+					<button type="submit" class="btn">Send OTP</button>
+				</form>
+				<script>
+					const emailInput = document.getElementById('email');
+					const phoneInput = document.getElementById('phone');
+					const form = document.getElementById('loginForm');
+
+					function updateRequired() {
+						if (emailInput.value.trim() !== '') {
+							phoneInput.disabled = true;
+							phoneInput.removeAttribute('required');
+							emailInput.setAttribute('required', 'required');
+						} else if (phoneInput.value.trim() !== '') {
+							emailInput.disabled = true;
+							emailInput.removeAttribute('required');
+							phoneInput.setAttribute('required', 'required');
+						} else {
+							emailInput.disabled = false;
+							phoneInput.disabled = false;
+							emailInput.removeAttribute('required');
+							phoneInput.removeAttribute('required');
+						}
+					}
+
+					emailInput.addEventListener('input', updateRequired);
+					phoneInput.addEventListener('input', updateRequired);
+
+					form.addEventListener('submit', (e) => {
+						if (emailInput.value.trim() === '' && phoneInput.value.trim() === '') {
+							e.preventDefault();
+							alert('Please enter either your email or phone number.');
+						}
+					});
+				</script>
+				<div class="auth-link">
+					Don't have an account? <a href="/setup">Register</a>
+				</div>
 			</div>
 		</body>
 	</html>

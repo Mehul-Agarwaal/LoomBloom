@@ -22,6 +22,7 @@ templ ProductionPage(org store.Organization, entries []store.ProductionEntry, ma
 				<h2>Production Log ({ org.Name })</h2>
 				<p>Track daily machine output shifts, metrics, and weaver operations.</p>
 			</div>
+			<a href="/production/new" class="btn btn-primary">Log Production</a>
 		</div>
 
 		if errStr != "" {
@@ -30,99 +31,115 @@ templ ProductionPage(org store.Organization, entries []store.ProductionEntry, ma
 			</div>
 		}
 
-		<div class="two-col">
-			<div class="section">
-				<header>
-					<h3>Recorded Daily Output</h3>
-					<span class="subtle">{ fmt.Sprintf("%d logs", len(entries)) }</span>
-				</header>
-				if len(entries) == 0 {
-					<p class="empty">No production entries logged yet. Use the panel on the right to log shift outputs.</p>
-				} else {
-					<table>
-						<thead>
+		<div class="section">
+			<header>
+				<h3>Recorded Daily Output</h3>
+				<span class="subtle">{ fmt.Sprintf("%d logs", len(entries)) }</span>
+			</header>
+			if len(entries) == 0 {
+				<p class="empty">No production entries logged yet. Click "Log Production" to add one.</p>
+			} else {
+				<table>
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Loom / Machine</th>
+							<th>Weaver / Worker</th>
+							<th>Shift</th>
+							<th>Quantity</th>
+						</tr>
+					</thead>
+					<tbody>
+						for _, e := range entries {
 							<tr>
-								<th>Date</th>
-								<th>Loom / Machine</th>
-								<th>Weaver / Worker</th>
-								<th>Shift</th>
-								<th>Quantity</th>
+								<td>{ e.EntryDate.Format("02 Jan 2006") }</td>
+								<td style="font-weight: 600;">
+									if num, ok := machineMap[e.MachineID]; ok {
+										{ num }
+									} else {
+										<span class="subtle">Unknown Loom</span>
+									}
+								</td>
+								<td>
+									if name, ok := workerMap[e.WorkerID]; ok && e.WorkerID != "" {
+										{ name }
+									} else {
+										<span class="subtle">Unassigned</span>
+									}
+								</td>
+								<td style="text-transform: capitalize;">{ e.Shift }</td>
+								<td style="font-weight: 600; color: var(--accent);">{ fmt.Sprintf("%.2f %s", e.Quantity, e.Unit) }</td>
 							</tr>
-						</thead>
-						<tbody>
-							for _, e := range entries {
-								<tr>
-									<td>{ e.EntryDate.Format("02 Jan 2006") }</td>
-									<td style="font-weight: 600;">
-										if num, ok := machineMap[e.MachineID]; ok {
-											{ num }
-										} else {
-											<span class="subtle">Unknown Loom</span>
-										}
-									</td>
-									<td>
-										if name, ok := workerMap[e.WorkerID]; ok && e.WorkerID != "" {
-											{ name }
-										} else {
-											<span class="subtle">Unassigned</span>
-										}
-									</td>
-									<td style="text-transform: capitalize;">{ e.Shift }</td>
-									<td style="font-weight: 600; color: var(--accent);">{ fmt.Sprintf("%.2f %s", e.Quantity, e.Unit) }</td>
-								</tr>
-							}
-						</tbody>
-					</table>
-				}
-			</div>
+						}
+					</tbody>
+				</table>
+			}
+		</div>
+	}
+}
 
-			<div>
-				<div class="form-card">
-					<h3>Log Output Shift</h3>
-					<form action="/production" method="POST">
+templ ProductionFormPage(org store.Organization, machines []store.Machine, workers []store.Worker, errStr string) {
+	@PageLayout("Log Production", org, "production") {
+		<div class="page-header">
+			<div class="page-title">
+				<h2>Log Shift Output</h2>
+				<p>Record production data for a specific shift and machine.</p>
+			</div>
+			<a href="/production" class="btn" style="border: 1px solid var(--line); color: var(--ink);">Back to Logs</a>
+		</div>
+
+		if errStr != "" {
+			<div class="alert alert-danger">
+				<strong>Error:</strong> { errStr }
+			</div>
+		}
+
+		<div style="max-width: 600px; margin: 0 auto;">
+			<div class="form-card" style="position: static;">
+				<h3>Log Output</h3>
+				<form action="/production/new" method="POST">
+					<div class="form-group">
+						<label for="machine_id">Loom / Machine *</label>
+						<select id="machine_id" name="machine_id" class="form-control" required>
+							<option value="" disabled selected>Select a Loom</option>
+							for _, m := range machines {
+								<option value={ m.ID }>{ m.MachineNumber } ({ m.Size } - { m.Type })</option>
+							}
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="worker_id">Weaver / Worker</label>
+						<select id="worker_id" name="worker_id" class="form-control">
+							<option value="">None / Unassigned</option>
+							for _, w := range workers {
+								<option value={ w.ID }>{ w.Name }</option>
+							}
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="entry_date">Production Date *</label>
+						<input type="date" id="entry_date" name="entry_date" class="form-control" required />
+					</div>
+					<div class="form-group">
+						<label for="shift">Shift</label>
+						<select id="shift" name="shift" class="form-control">
+							<option value="morning" selected>Morning</option>
+							<option value="evening">Evening</option>
+							<option value="night">Night</option>
+						</select>
+					</div>
+					<div class="form-row">
 						<div class="form-group">
-							<label for="machine_id">Loom / Machine *</label>
-							<select id="machine_id" name="machine_id" class="form-control" required>
-								<option value="" disabled selected>Select a Loom</option>
-								for _, m := range machines {
-									<option value={ m.ID }>{ m.MachineNumber } ({ m.Size } - { m.Type })</option>
-								}
-							</select>
+							<label for="quantity">Quantity *</label>
+							<input type="number" step="0.01" id="quantity" name="quantity" class="form-control" placeholder="0.00" required />
 						</div>
 						<div class="form-group">
-							<label for="worker_id">Weaver / Worker</label>
-							<select id="worker_id" name="worker_id" class="form-control">
-								<option value="">None / Unassigned</option>
-								for _, w := range workers {
-									<option value={ w.ID }>{ w.Name }</option>
-								}
-							</select>
+							<label for="unit">Unit</label>
+							<input type="text" id="unit" name="unit" class="form-control" value="meters" />
 						</div>
-						<div class="form-group">
-							<label for="entry_date">Production Date *</label>
-							<input type="date" id="entry_date" name="entry_date" class="form-control" required />
-						</div>
-						<div class="form-group">
-							<label for="shift">Shift</label>
-							<select id="shift" name="shift" class="form-control">
-								<option value="morning" selected>Morning</option>
-								<option value="evening">Evening</option>
-								<option value="night">Night</option>
-							</select>
-						</div>
-						<div class="form-row">
-							<div class="form-group">
-								<label for="quantity">Quantity *</label>
-								<input type="number" step="0.01" id="quantity" name="quantity" class="form-control" placeholder="0.00" required />
-							</div>
-							<div class="form-group">
-								<label for="unit">Unit</label>
-								<input type="text" id="unit" name="unit" class="form-control" value="meters" />
-							</div>
-						</div>
-						<button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">Log Production</button>
-					</form>
-				</div>
+					</div>
+					<button type="submit" class="btn btn-primary btn-block" style="margin-top: 16px;">Log Production</button>
+				</form>
 			</div>
 		</div>
 

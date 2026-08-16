@@ -1,0 +1,59 @@
+package views
+
+import (
+	"loombloom/internal/store"
+)
+
+templ SettingsPage(org store.Organization, errStr string) {
+	@PageLayout("Settings", org, "settings") {
+		<div class="page-header">
+			<div class="page-title">
+				<h2>Factory Settings</h2>
+				<p>Manage your organization details, plan, and billing.</p>
+			</div>
+		</div>
+
+		if errStr != "" {
+			<div class="alert alert-danger">
+				<strong>Error:</strong> { errStr }
+			</div>
+		}
+
+		<div class="two-col">
+			<div class="form-card" style="position: static;">
+				<h3>Organization Profile</h3>
+				<form action="/settings" method="POST">
+					<div class="form-group">
+						<label for="name">Organization Name</label>
+						<input type="text" id="name" name="name" class="form-control" value={ org.Name } required />
+					</div>
+					<div class="form-group">
+						<label for="contact">Primary Contact</label>
+						<input type="text" id="contact" name="contact" class="form-control" placeholder="Contact number" />
+					</div>
+					<button type="submit" class="btn btn-primary" style="margin-top: 16px;">Save Changes</button>
+				</form>
+			</div>
+
+			<div class="section">
+				<header>
+					<h3>Subscription & Billing</h3>
+				</header>
+				<div style="padding: 24px;">
+					<p class="subtle">Current Plan</p>
+					<div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
+						<div style="font-size: 24px; font-weight: 700; text-transform: capitalize; color: var(--neon-purple);">
+							{ org.SubscriptionPlan }
+						</div>
+						if org.SubscriptionPlan != "premium" {
+							<a href="/plans" class="btn btn-primary">Upgrade</a>
+						}
+					</div>
+					<hr style="border: 0; border-bottom: 1px solid var(--line); margin: 24px 0;" />
+					<p class="subtle" style="margin-bottom: 8px;">Billing Status</p>
+					<span class="status">Active</span>
+				</div>
+			</div>
+		</div>
+	}
+}
