@@ -9,11 +9,11 @@ import (
 
 func (s Store) CreateOrganization(ctx context.Context, org Organization) (Organization, error) {
 	const query = `
-		INSERT INTO organizations (name, gst_number, owner_name, owner_email, phone, subscription_plan, phone_verified)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
-		RETURNING id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, created_at`
+		INSERT INTO organizations (name, gst_number, owner_name, owner_email, phone, subscription_plan, phone_verified, password_hash)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		RETURNING id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, password_hash, created_at`
 
-	err := s.db.QueryRowContext(ctx, query, org.Name, org.GSTNumber, org.OwnerName, org.OwnerEmail, org.Phone, org.SubscriptionPlan, org.PhoneVerified).Scan(
+	err := s.db.QueryRowContext(ctx, query, org.Name, org.GSTNumber, org.OwnerName, org.OwnerEmail, org.Phone, org.SubscriptionPlan, org.PhoneVerified, org.PasswordHash).Scan(
 		&org.ID,
 		&org.Name,
 		&org.GSTNumber,
@@ -22,6 +22,7 @@ func (s Store) CreateOrganization(ctx context.Context, org Organization) (Organi
 		&org.Phone,
 		&org.PhoneVerified,
 		&org.SubscriptionPlan,
+		&org.PasswordHash,
 		&org.CreatedAt,
 	)
 	return org, err
@@ -29,7 +30,7 @@ func (s Store) CreateOrganization(ctx context.Context, org Organization) (Organi
 
 func (s Store) ListOrganizations(ctx context.Context) ([]Organization, error) {
 	const query = `
-		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, created_at
+		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, password_hash, created_at
 		FROM organizations
 		ORDER BY created_at DESC`
 
@@ -51,6 +52,7 @@ func (s Store) ListOrganizations(ctx context.Context) ([]Organization, error) {
 			&org.Phone,
 			&org.PhoneVerified,
 			&org.SubscriptionPlan,
+			&org.PasswordHash,
 			&org.CreatedAt,
 		)
 		if err != nil {
@@ -84,7 +86,7 @@ func (s Store) OrganizationExists(ctx context.Context, id string) (bool, error) 
 
 func (s Store) GetFirstOrganization(ctx context.Context) (Organization, error) {
 	const query = `
-		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, created_at
+		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, password_hash, created_at
 		FROM organizations
 		ORDER BY created_at ASC
 		LIMIT 1`
@@ -98,6 +100,7 @@ func (s Store) GetFirstOrganization(ctx context.Context) (Organization, error) {
 		&org.Phone,
 		&org.PhoneVerified,
 		&org.SubscriptionPlan,
+		&org.PasswordHash,
 		&org.CreatedAt,
 	)
 	return org, err
@@ -105,7 +108,7 @@ func (s Store) GetFirstOrganization(ctx context.Context) (Organization, error) {
 
 func (s Store) GetOrganization(ctx context.Context, id string) (Organization, error) {
 	const query = `
-		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, created_at
+		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, password_hash, created_at
 		FROM organizations
 		WHERE id = $1`
 	var org Organization
@@ -118,6 +121,7 @@ func (s Store) GetOrganization(ctx context.Context, id string) (Organization, er
 		&org.Phone,
 		&org.PhoneVerified,
 		&org.SubscriptionPlan,
+		&org.PasswordHash,
 		&org.CreatedAt,
 	)
 	return org, err
@@ -125,7 +129,7 @@ func (s Store) GetOrganization(ctx context.Context, id string) (Organization, er
 
 func (s Store) GetOrganizationByEmail(ctx context.Context, email string) (Organization, error) {
 	const query = `
-		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, created_at
+		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, password_hash, created_at
 		FROM organizations
 		WHERE owner_email = $1
 		LIMIT 1`
@@ -139,6 +143,7 @@ func (s Store) GetOrganizationByEmail(ctx context.Context, email string) (Organi
 		&org.Phone,
 		&org.PhoneVerified,
 		&org.SubscriptionPlan,
+		&org.PasswordHash,
 		&org.CreatedAt,
 	)
 	return org, err
@@ -146,7 +151,7 @@ func (s Store) GetOrganizationByEmail(ctx context.Context, email string) (Organi
 
 func (s Store) GetOrganizationByPhone(ctx context.Context, phone string) (Organization, error) {
 	const query = `
-		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, created_at
+		SELECT id, name, gst_number, owner_name, owner_email, phone, phone_verified, subscription_plan, password_hash, created_at
 		FROM organizations
 		WHERE phone = $1
 		LIMIT 1`
@@ -160,6 +165,7 @@ func (s Store) GetOrganizationByPhone(ctx context.Context, phone string) (Organi
 		&org.Phone,
 		&org.PhoneVerified,
 		&org.SubscriptionPlan,
+		&org.PasswordHash,
 		&org.CreatedAt,
 	)
 	return org, err

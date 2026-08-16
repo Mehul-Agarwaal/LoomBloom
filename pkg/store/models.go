@@ -11,6 +11,7 @@ type Organization struct {
 	Phone            string    `json:"phone"`
 	PhoneVerified    bool      `json:"phone_verified"`
 	SubscriptionPlan string    `json:"subscription_plan"`
+	PasswordHash     string    `json:"-"`
 	CreatedAt        time.Time `json:"created_at"`
 }
 
