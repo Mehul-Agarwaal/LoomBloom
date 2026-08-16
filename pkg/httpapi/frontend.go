@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"loombloom/internal/store"
-	"loombloom/internal/views"
+	"loombloom/pkg/store"
+	"loombloom/pkg/views"
 )
 
 func (api API) dashboard(w http.ResponseWriter, r *http.Request) {

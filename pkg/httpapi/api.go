@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	"loombloom/internal/store"
+	"loombloom/pkg/store"
 )
 
 type API struct {

@@ -9,7 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"loombloom/internal/store"
+	"loombloom/pkg/store"
 )
 
 func SetupPage(errStr string) templ.Component {
@@ -45,7 +45,7 @@ func SetupPage(errStr string) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/onboarding.templ`, Line: 183, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 183, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -97,7 +97,7 @@ func LoginPage(errStr string) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/onboarding.templ`, Line: 390, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 390, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -144,7 +144,7 @@ func VerifyPage(orgID string, phone string, errStr string) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(phone)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/onboarding.templ`, Line: 634, Col: 95}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 634, Col: 95}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -162,7 +162,7 @@ func VerifyPage(orgID string, phone string, errStr string) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/onboarding.templ`, Line: 638, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 638, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -180,7 +180,7 @@ func VerifyPage(orgID string, phone string, errStr string) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.ResolveAttributeValue(orgID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/onboarding.templ`, Line: 646, Col: 53}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 646, Col: 53}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 		if templ_7745c5c3_Err != nil {
@@ -193,7 +193,7 @@ func VerifyPage(orgID string, phone string, errStr string) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.ResolveAttributeValue(orgID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/onboarding.templ`, Line: 663, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 663, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
 		if templ_7745c5c3_Err != nil {
@@ -240,7 +240,7 @@ func PlansPage(org store.Organization, errStr string) templ.Component {
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/onboarding.templ`, Line: 932, Col: 31}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 932, Col: 31}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {

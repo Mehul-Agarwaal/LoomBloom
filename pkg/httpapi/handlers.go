@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"loombloom/internal/store"
+	"loombloom/pkg/store"
 )
 
 func (api API) listOrganizations(w http.ResponseWriter, r *http.Request) {

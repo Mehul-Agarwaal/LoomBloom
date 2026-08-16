@@ -14,7 +14,7 @@ import (
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 
-	"loombloom/internal/config"
+	"loombloom/pkg/config"
 )
 
 func main() {

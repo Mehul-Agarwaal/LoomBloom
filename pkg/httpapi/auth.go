@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"loombloom/internal/store"
-	"loombloom/internal/views"
+	"loombloom/pkg/store"
+	"loombloom/pkg/views"
 )
 
 type contextKey string

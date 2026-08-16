@@ -8,9 +8,9 @@ import (
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 
-	"loombloom/internal/config"
-	"loombloom/internal/httpapi"
-	"loombloom/internal/store"
+	"loombloom/pkg/config"
+	"loombloom/pkg/httpapi"
+	"loombloom/pkg/store"
 )
 
 var (

@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
-	"loombloom/internal/store"
+	"loombloom/pkg/store"
 )
 
 func ProductionPage(org store.Organization, entries []store.ProductionEntry, machines []store.Machine, workers []store.Worker, errStr string) templ.Component {
@@ -61,7 +61,7 @@ func ProductionPage(org store.Organization, entries []store.ProductionEntry, mac
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(org.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 22, Col: 34}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 22, Col: 34}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -79,7 +79,7 @@ func ProductionPage(org store.Organization, entries []store.ProductionEntry, mac
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 30, Col: 36}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 30, Col: 36}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -97,7 +97,7 @@ func ProductionPage(org store.Organization, entries []store.ProductionEntry, mac
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d logs", len(entries)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 37, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 37, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -125,7 +125,7 @@ func ProductionPage(org store.Organization, entries []store.ProductionEntry, mac
 					var templ_7745c5c3_Var6 string
 					templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(e.EntryDate.Format("02 Jan 2006"))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 55, Col: 47}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 55, Col: 47}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 					if templ_7745c5c3_Err != nil {
@@ -139,7 +139,7 @@ func ProductionPage(org store.Organization, entries []store.ProductionEntry, mac
 						var templ_7745c5c3_Var7 string
 						templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(num)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 58, Col: 15}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 58, Col: 15}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 						if templ_7745c5c3_Err != nil {
@@ -159,7 +159,7 @@ func ProductionPage(org store.Organization, entries []store.ProductionEntry, mac
 						var templ_7745c5c3_Var8 string
 						templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(name)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 65, Col: 16}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 65, Col: 16}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 						if templ_7745c5c3_Err != nil {
@@ -178,7 +178,7 @@ func ProductionPage(org store.Organization, entries []store.ProductionEntry, mac
 					var templ_7745c5c3_Var9 string
 					templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(e.Shift)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 70, Col: 57}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 70, Col: 57}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 					if templ_7745c5c3_Err != nil {
@@ -191,7 +191,7 @@ func ProductionPage(org store.Organization, entries []store.ProductionEntry, mac
 					var templ_7745c5c3_Var10 string
 					templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.2f %s", e.Quantity, e.Unit))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 71, Col: 104}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 71, Col: 104}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 					if templ_7745c5c3_Err != nil {
@@ -266,7 +266,7 @@ func ProductionFormPage(org store.Organization, machines []store.Machine, worker
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 93, Col: 36}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 93, Col: 36}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -289,7 +289,7 @@ func ProductionFormPage(org store.Organization, machines []store.Machine, worker
 				var templ_7745c5c3_Var14 string
 				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.ResolveAttributeValue(m.ID)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 106, Col: 28}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 106, Col: 28}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
 				if templ_7745c5c3_Err != nil {
@@ -302,7 +302,7 @@ func ProductionFormPage(org store.Organization, machines []store.Machine, worker
 				var templ_7745c5c3_Var15 string
 				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(m.MachineNumber)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 106, Col: 48}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 106, Col: 48}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 				if templ_7745c5c3_Err != nil {
@@ -315,7 +315,7 @@ func ProductionFormPage(org store.Organization, machines []store.Machine, worker
 				var templ_7745c5c3_Var16 string
 				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(m.Size)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 106, Col: 60}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 106, Col: 60}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {
@@ -328,7 +328,7 @@ func ProductionFormPage(org store.Organization, machines []store.Machine, worker
 				var templ_7745c5c3_Var17 string
 				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(m.Type)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 106, Col: 73}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 106, Col: 73}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 				if templ_7745c5c3_Err != nil {
@@ -351,7 +351,7 @@ func ProductionFormPage(org store.Organization, machines []store.Machine, worker
 				var templ_7745c5c3_Var18 string
 				templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.ResolveAttributeValue(w.ID)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 115, Col: 28}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 115, Col: 28}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
 				if templ_7745c5c3_Err != nil {
@@ -364,7 +364,7 @@ func ProductionFormPage(org store.Organization, machines []store.Machine, worker
 				var templ_7745c5c3_Var19 string
 				templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(w.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/production.templ`, Line: 115, Col: 39}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/production.templ`, Line: 115, Col: 39}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 				if templ_7745c5c3_Err != nil {
@@ -375,7 +375,7 @@ func ProductionFormPage(org store.Organization, machines []store.Machine, worker
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</select></div><div class=\"form-group\"><label for=\"entry_date\">Production Date *</label> <input type=\"date\" id=\"entry_date\" name=\"entry_date\" class=\"form-control\" required></div><div class=\"form-group\"><label for=\"shift\">Shift</label> <select id=\"shift\" name=\"shift\" class=\"form-control\"><option value=\"morning\" selected>Morning</option> <option value=\"evening\">Evening</option> <option value=\"night\">Night</option></select></div><div class=\"form-row\"><div class=\"form-group\"><label for=\"quantity\">Quantity *</label> <input type=\"number\" step=\"0.01\" id=\"quantity\" name=\"quantity\" class=\"form-control\" placeholder=\"0.00\" required></div><div class=\"form-group\"><label for=\"unit\">Unit</label> <input type=\"text\" id=\"unit\" name=\"unit\" class=\"form-control\" value=\"meters\"></div></div><button type=\"submit\" class=\"btn btn-primary btn-block\" style=\"margin-top: 16px;\">Log Production</button></form></div></div><script>\n\t\t\t// Pre-fill today's date in local time zone\n\t\t\tdocument.addEventListener(\"DOMContentLoaded\", function() {\n\t\t\t\tconst dateInput = document.getElementById(\"entry_date\");\n\t\t\t\tif (dateInput && !dateInput.value) {\n\t\t\t\t\tconst today = new Date().toISOString().split('T')[0];\n\t\t\t\t\tdateInput.value = today;\n\t\t\t\t}\n\t\t\t});\n\t\t</script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</select></div><div class=\"form-group\"><label for=\"entry_date\">Production Date *</label> <input type=\"date\" id=\"entry_date\" name=\"entry_date\" class=\"form-control\" required></div><div class=\"form-group\"><label for=\"shift\">Shift</label> <select id=\"shift\" name=\"shift\" class=\"form-control\"><option value=\"morning\" selected>Morning</option> <option value=\"evening\">Evening</option> <option value=\"night\">Night</option></select></div><div class=\"form-row\"><div class=\"form-group\"><label for=\"quantity\">Quantity *</label> <input type=\"number\" step=\"0.01\" id=\"quantity\" name=\"quantity\" class=\"form-control\" placeholder=\"0.00\" required></div><div class=\"form-group\"><label for=\"unit\">Unit</label> <input type=\"text\" id=\"unit\" name=\"unit\" class=\"form-control\" value=\"meters\"></div></div><button type=\"submit\" class=\"btn btn-primary btn-block\" style=\"margin-top: 16px;\">Log Production</button></form></div></div><script>\r\n\t\t\t// Pre-fill today's date in local time zone\r\n\t\t\tdocument.addEventListener(\"DOMContentLoaded\", function() {\r\n\t\t\t\tconst dateInput = document.getElementById(\"entry_date\");\r\n\t\t\t\tif (dateInput && !dateInput.value) {\r\n\t\t\t\t\tconst today = new Date().toISOString().split('T')[0];\r\n\t\t\t\t\tdateInput.value = today;\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
