@@ -1,8 +1,6 @@
 package httpapi
 
 import (
-	"database/sql"
-	"errors"
 	"net/http"
 	"strconv"
 	"time"
@@ -12,7 +10,13 @@ import (
 )
 
 func (api API) dashboard(w http.ResponseWriter, r *http.Request) {
-	data, err := api.store.Dashboard(r.Context())
+	org, ok := GetOrg(r.Context())
+	if !ok {
+		http.Redirect(w, r, "/setup", http.StatusSeeOther)
+		return
+	}
+
+	data, err := api.store.Dashboard(r.Context(), org)
 	if err != nil {
 		api.logger.Error("load dashboard", "error", err)
 		writeError(w, http.StatusInternalServerError, err)
@@ -29,14 +33,9 @@ func (api API) dashboard(w http.ResponseWriter, r *http.Request) {
 
 func (api API) machinesPage(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	org, err := api.store.GetFirstOrganization(ctx)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		}
-		api.logger.Error("load organization", "error", err)
-		writeError(w, http.StatusInternalServerError, err)
+	org, ok := GetOrg(ctx)
+	if !ok {
+		http.Redirect(w, r, "/setup", http.StatusSeeOther)
 		return
 	}
 
@@ -88,14 +87,9 @@ func (api API) machinesPage(w http.ResponseWriter, r *http.Request) {
 
 func (api API) workersPage(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	org, err := api.store.GetFirstOrganization(ctx)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		}
-		api.logger.Error("load organization", "error", err)
-		writeError(w, http.StatusInternalServerError, err)
+	org, ok := GetOrg(ctx)
+	if !ok {
+		http.Redirect(w, r, "/setup", http.StatusSeeOther)
 		return
 	}
 
@@ -156,14 +150,9 @@ func (api API) workersPage(w http.ResponseWriter, r *http.Request) {
 
 func (api API) stockPage(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	org, err := api.store.GetFirstOrganization(ctx)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		}
-		api.logger.Error("load organization", "error", err)
-		writeError(w, http.StatusInternalServerError, err)
+	org, ok := GetOrg(ctx)
+	if !ok {
+		http.Redirect(w, r, "/setup", http.StatusSeeOther)
 		return
 	}
 
@@ -223,14 +212,9 @@ func (api API) stockPage(w http.ResponseWriter, r *http.Request) {
 
 func (api API) productionPage(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	org, err := api.store.GetFirstOrganization(ctx)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		}
-		api.logger.Error("load organization", "error", err)
-		writeError(w, http.StatusInternalServerError, err)
+	org, ok := GetOrg(ctx)
+	if !ok {
+		http.Redirect(w, r, "/setup", http.StatusSeeOther)
 		return
 	}
 

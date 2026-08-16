@@ -2,7 +2,6 @@ package store
 
 import (
 	"context"
-	"database/sql"
 )
 
 type Dashboard struct {
@@ -20,30 +19,10 @@ type Dashboard struct {
 	RecentProductions []ProductionEntry
 }
 
-func (s Store) Dashboard(ctx context.Context) (Dashboard, error) {
+func (s Store) Dashboard(ctx context.Context, org Organization) (Dashboard, error) {
 	var dashboard Dashboard
-
-	const orgQuery = `
-		SELECT id, name, owner_name, phone, subscription_plan, created_at
-		FROM organizations
-		ORDER BY created_at ASC
-		LIMIT 1`
-	err := s.db.QueryRowContext(ctx, orgQuery).Scan(
-		&dashboard.Organization.ID,
-		&dashboard.Organization.Name,
-		&dashboard.Organization.OwnerName,
-		&dashboard.Organization.Phone,
-		&dashboard.Organization.SubscriptionPlan,
-		&dashboard.Organization.CreatedAt,
-	)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return dashboard, nil
-		}
-		return dashboard, err
-	}
-
-	organizationID := dashboard.Organization.ID
+	dashboard.Organization = org
+	organizationID := org.ID
 
 	if err := s.db.QueryRowContext(ctx, `SELECT COUNT(*) FROM machines WHERE organization_id = $1`, organizationID).Scan(&dashboard.MachineCount); err != nil {
 		return dashboard, err

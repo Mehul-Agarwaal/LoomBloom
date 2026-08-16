@@ -1,0 +1,307 @@
+package views
+
+import (
+	"loombloom/internal/store"
+)
+
+templ MockCheckoutPage(org store.Organization, plan string) {
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>Secure Payment Portal - LoomBloom</title>
+			<style>
+				@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+				:root {
+					color-scheme: dark;
+					--ink: #f8fafc;
+					--muted: #94a3b8;
+					--line: rgba(99, 102, 241, 0.12);
+					--paper: #05070f;
+					--panel: rgba(13, 17, 35, 0.65);
+					--accent: #00e5ff;
+					--accent-2: #c084fc;
+					--neon-blue: #00e5ff;
+					--neon-purple: #c084fc;
+					--deep-purple: #7c3aed;
+					--danger: #ff1744;
+					--ok: #00e676;
+				}
+				* { box-sizing: border-box; }
+				body {
+					margin: 0;
+					font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+					color: var(--ink);
+					background: radial-gradient(circle at 50% 0%, #150d30 0%, #05070f 75%);
+					background-attachment: fixed;
+					min-height: 100vh;
+					display: grid;
+					place-items: center;
+					padding: 24px;
+				}
+				.checkout-card {
+					width: 100%;
+					max-width: 520px;
+					background: var(--panel);
+					border: 1px solid var(--line);
+					border-radius: 16px;
+					padding: 36px;
+					backdrop-filter: blur(16px);
+					box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 229, 255, 0.05);
+				}
+				.header {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					border-bottom: 1px solid var(--line);
+					padding-bottom: 20px;
+					margin-bottom: 24px;
+				}
+				.portal-title {
+					font-family: 'Outfit', sans-serif;
+					font-size: 18px;
+					font-weight: 700;
+					color: var(--ink);
+					display: flex;
+					align-items: center;
+					gap: 8px;
+				}
+				.lock-icon {
+					color: var(--ok);
+					font-size: 16px;
+				}
+				.plan-badge {
+					background: rgba(192, 132, 252, 0.12);
+					border: 1px solid rgba(192, 132, 252, 0.3);
+					color: var(--neon-purple);
+					font-size: 12px;
+					font-weight: 600;
+					padding: 4px 12px;
+					border-radius: 999px;
+					text-transform: uppercase;
+				}
+				.order-details {
+					background: rgba(0, 0, 0, 0.2);
+					border-radius: 8px;
+					padding: 16px;
+					margin-bottom: 24px;
+					border: 1px solid rgba(255, 255, 255, 0.03);
+				}
+				.detail-row {
+					display: flex;
+					justify-content: space-between;
+					font-size: 14px;
+					margin-bottom: 8px;
+				}
+				.detail-row:last-child {
+					margin-bottom: 0;
+					font-weight: 700;
+					border-top: 1px solid var(--line);
+					padding-top: 8px;
+					margin-top: 8px;
+				}
+				.detail-label {
+					color: var(--muted);
+				}
+				.detail-value {
+					color: var(--ink);
+				}
+				.tab-container {
+					display: flex;
+					gap: 8px;
+					margin-bottom: 20px;
+				}
+				.tab {
+					flex: 1;
+					text-align: center;
+					padding: 12px;
+					border-radius: 8px;
+					border: 1px solid rgba(255, 255, 255, 0.08);
+					font-size: 13px;
+					font-weight: 600;
+					cursor: pointer;
+					background: rgba(255, 255, 255, 0.02);
+					transition: all 0.2s;
+				}
+				.tab.active {
+					border-color: var(--neon-blue);
+					background: rgba(0, 229, 255, 0.08);
+					color: var(--neon-blue);
+				}
+				.form-group {
+					margin-bottom: 16px;
+				}
+				.form-group label {
+					display: block;
+					font-size: 12px;
+					font-weight: 600;
+					color: var(--muted);
+					margin-bottom: 6px;
+				}
+				.form-control {
+					width: 100%;
+					height: 40px;
+					padding: 8px 12px;
+					background: rgba(5, 7, 15, 0.7);
+					border: 1px solid rgba(255, 255, 255, 0.08);
+					border-radius: 8px;
+					color: var(--ink);
+					font-family: inherit;
+					font-size: 14px;
+					transition: all 0.2s;
+				}
+				.form-control:focus {
+					outline: none;
+					border-color: var(--neon-blue);
+					background: rgba(5, 7, 15, 0.9);
+				}
+				.form-row {
+					display: grid;
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+					gap: 12px;
+				}
+				.pay-btn {
+					width: 100%;
+					height: 46px;
+					border-radius: 8px;
+					font-size: 15px;
+					font-weight: 700;
+					border: none;
+					cursor: pointer;
+					background: linear-gradient(135deg, var(--neon-blue), var(--deep-purple));
+					color: #05070f;
+					box-shadow: 0 4px 15px rgba(0, 229, 255, 0.2);
+					transition: all 0.2s;
+					margin-top: 12px;
+				}
+				.pay-btn:hover {
+					transform: translateY(-1px);
+					box-shadow: 0 6px 20px rgba(0, 229, 255, 0.35), 0 0 10px rgba(192, 132, 252, 0.25);
+				}
+				.footer-note {
+					text-align: center;
+					font-size: 12px;
+					color: var(--muted);
+					margin-top: 20px;
+					line-height: 1.5;
+				}
+			</style>
+		</head>
+		<body>
+			<div class="checkout-card">
+				<div class="header">
+					<div class="portal-title">
+						<span class="lock-icon">🔒</span> Secure Checkout
+					</div>
+					<div class="plan-badge">{ plan } Plan</div>
+				</div>
+
+				<div class="order-details">
+					<div class="detail-row">
+						<span class="detail-label">Enterprise</span>
+						<span class="detail-value">{ org.Name }</span>
+					</div>
+					<div class="detail-row">
+						<span class="detail-label">GSTIN</span>
+						<span class="detail-value">{ org.GSTNumber }</span>
+					</div>
+					<div class="detail-row">
+						<span class="detail-label">Plan Billed</span>
+						<span class="detail-value" style="text-transform: capitalize;">{ plan } monthly</span>
+					</div>
+					<div class="detail-row">
+						<span class="detail-label">Total Amount</span>
+						<span class="detail-value">
+							if plan == "starter" {
+								₹1,499
+							} else if plan == "pro" {
+								₹2,999
+							} else {
+								₹5,999
+							}
+						</span>
+					</div>
+				</div>
+
+				<div class="tab-container">
+					<div class="tab active" onclick="selectTab('card')">💳 Card</div>
+					<div class="tab" onclick="selectTab('upi')">📱 UPI / QR</div>
+					<div class="tab" onclick="selectTab('net')">🏦 Net Banking</div>
+				</div>
+
+				<form id="payment-form" method="POST" action="/payment/callback">
+					<input type="hidden" name="plan" value={ plan }/>
+					<input type="hidden" name="org_id" value={ org.ID }/>
+
+					<!-- Card Payment fields -->
+					<div id="card-fields">
+						<div class="form-group">
+							<label for="card_num">Card Number</label>
+							<input type="text" id="card_num" class="form-control" placeholder="4111 2222 3333 4444" value="4111 2222 3333 4444" required/>
+						</div>
+						<div class="form-row">
+							<div class="form-group">
+								<label for="expiry">Expiry Date</label>
+								<input type="text" id="expiry" class="form-control" placeholder="MM/YY" value="12/28" required/>
+							</div>
+							<div class="form-group">
+								<label for="cvv">CVV</label>
+								<input type="password" id="cvv" class="form-control" placeholder="123" value="123" required/>
+							</div>
+						</div>
+					</div>
+
+					<!-- UPI payment placeholder -->
+					<div id="upi-fields" style="display: none;">
+						<div class="form-group">
+							<label for="upi_id">UPI ID</label>
+							<input type="text" id="upi_id" class="form-control" placeholder="e.g. owner@okaxis"/>
+						</div>
+					</div>
+
+					<button type="submit" class="pay-btn">Simulate Payment Success</button>
+				</form>
+
+				<div class="footer-note">
+					This is a secure checkout simulation sandbox.<br/>
+					Clicking the pay button will successfully register the subscription.
+				</div>
+			</div>
+
+			<script>
+				function selectTab(type) {
+					document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+					event.target.classList.add('active');
+
+					const cardFields = document.getElementById('card-fields');
+					const upiFields = document.getElementById('upi-fields');
+
+					if (type === 'card') {
+						cardFields.style.display = 'block';
+						upiFields.style.display = 'none';
+						document.getElementById('card_num').required = true;
+						document.getElementById('expiry').required = true;
+						document.getElementById('cvv').required = true;
+						document.getElementById('upi_id').required = false;
+					} else if (type === 'upi') {
+						cardFields.style.display = 'none';
+						upiFields.style.display = 'block';
+						document.getElementById('card_num').required = false;
+						document.getElementById('expiry').required = false;
+						document.getElementById('cvv').required = false;
+						document.getElementById('upi_id').required = true;
+					} else {
+						cardFields.style.display = 'none';
+						upiFields.style.display = 'none';
+						document.getElementById('card_num').required = false;
+						document.getElementById('expiry').required = false;
+						document.getElementById('cvv').required = false;
+						document.getElementById('upi_id').required = false;
+					}
+				}
+			</script>
+		</body>
+	</html>
+}
