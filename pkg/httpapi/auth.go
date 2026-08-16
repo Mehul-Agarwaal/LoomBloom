@@ -141,12 +141,13 @@ func (api API) setupPageHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		name := r.FormValue("name")
+		gstNumber := r.FormValue("gst_number")
 		ownerName := r.FormValue("owner_name")
 		email := r.FormValue("owner_email")
 		phone := normalizePhone(r.FormValue("phone"))
 		password := r.FormValue("password")
 
-		if name == "" || ownerName == "" || email == "" || phone == "" || password == "" {
+		if name == "" || gstNumber == "" || ownerName == "" || email == "" || phone == "" || password == "" {
 			w.Header().Set("Content-Type", "text/html; charset=utf-8")
 			_ = views.SetupPage("All fields are required.").Render(r.Context(), w)
 			return
@@ -165,6 +166,7 @@ func (api API) setupPageHandler(w http.ResponseWriter, r *http.Request) {
 		// Create organization
 		org, err := api.store.CreateOrganization(r.Context(), store.Organization{
 			Name:             name,
+			GSTNumber:        gstNumber,
 			OwnerName:        ownerName,
 			OwnerEmail:       email,
 			Phone:            phone,

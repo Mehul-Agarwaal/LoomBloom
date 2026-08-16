@@ -56,7 +56,7 @@ func SetupPage(errStr string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form method=\"POST\" action=\"/setup\"><div class=\"form-group\"><label for=\"name\">Enterprise Name</label> <input type=\"text\" id=\"name\" name=\"name\" class=\"form-control\" placeholder=\"e.g. Acme Textiles\" required></div><div class=\"form-group\"><label for=\"owner_name\">Owner Name</label> <input type=\"text\" id=\"owner_name\" name=\"owner_name\" class=\"form-control\" placeholder=\"e.g. John Doe\" required></div><div class=\"form-group\"><label for=\"owner_email\">Owner Email</label> <input type=\"email\" id=\"owner_email\" name=\"owner_email\" class=\"form-control\" placeholder=\"e.g. john@example.com\" required></div><div class=\"form-group\"><label for=\"phone\">Owner Phone Number</label> <input type=\"tel\" id=\"phone\" name=\"phone\" class=\"form-control\" placeholder=\"e.g. 9876543210\" required></div><div class=\"form-group\"><label for=\"password\">Password</label> <input type=\"password\" id=\"password\" name=\"password\" class=\"form-control\" placeholder=\"Create a password\" required></div><button type=\"submit\" class=\"btn\">Register</button></form><div class=\"auth-link\">Already have an account? <a href=\"/login\">Login</a></div></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<form method=\"POST\" action=\"/setup\"><div class=\"form-group\"><label for=\"name\">Enterprise Name</label> <input type=\"text\" id=\"name\" name=\"name\" class=\"form-control\" placeholder=\"e.g. Acme Textiles\" required></div><div class=\"form-group\"><label for=\"gst_number\">GST Number</label> <input type=\"text\" id=\"gst_number\" name=\"gst_number\" class=\"form-control\" placeholder=\"e.g. 22AAAAA0000A1Z5\" required></div><div class=\"form-group\"><label for=\"owner_name\">Owner Name</label> <input type=\"text\" id=\"owner_name\" name=\"owner_name\" class=\"form-control\" placeholder=\"e.g. John Doe\" required></div><div class=\"form-group\"><label for=\"owner_email\">Owner Email</label> <input type=\"email\" id=\"owner_email\" name=\"owner_email\" class=\"form-control\" placeholder=\"e.g. john@example.com\" required></div><div class=\"form-group\"><label for=\"phone\">Owner Phone Number</label> <input type=\"tel\" id=\"phone\" name=\"phone\" class=\"form-control\" placeholder=\"e.g. 9876543210\" required></div><div class=\"form-group\"><label for=\"password\">Password</label> <input type=\"password\" id=\"password\" name=\"password\" class=\"form-control\" placeholder=\"Create a password\" required></div><button type=\"submit\" class=\"btn\">Register</button></form><div class=\"auth-link\">Already have an account? <a href=\"/login\">Login</a></div></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -97,7 +97,7 @@ func LoginPage(errStr string) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 394, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 398, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -149,7 +149,7 @@ func PlansPage(org store.Organization, errStr string) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 699, Col: 31}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `pkg/views/onboarding.templ`, Line: 703, Col: 31}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
